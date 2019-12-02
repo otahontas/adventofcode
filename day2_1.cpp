@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-    int x;
+    int x,i = 0;
     vector<int> v;
     ifstream f("day2_input.txt");
     while (f >> x) {
@@ -13,23 +13,14 @@ int main() {
         if (f.peek() == ',')
             f.ignore();
     }
-    for (int i = 0; i < 100; i++) {
-        for (int j = 0; j < 100; j++) {
-            vector<int> t(v);
-            t[1]=i;
-            t[2]=j;
-            int k = 0;
-            while (t[k] != 99) {
-                if (t[k] == 1) {
-                    t[t[k+3]] = t[v[k+1]] + t[t[k+2]];
-                } else {
-                    t[t[k+3]] = t[t[k+1]] * t[t[k+2]];
-                }
-                k+=4;
-            }
-            if (t[0] == 19690720) {
-                cout << "solution found, so 100 * noun + verb = " << 100 * i + j;
-            }
+
+    while (v[i] != 99) {
+        if (v[i] == 1) {
+            v[v[i+3]] = v[v[i+1]] + v[v[i+2]];
+        } else {
+            v[v[i+3]] = v[v[i+1]] * v[v[i+2]];
         }
+        i+=4;
     }
+    cout << v[0];
 }
