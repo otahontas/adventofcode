@@ -7,7 +7,7 @@ using namespace std;
 int main() {
     int x;
     vector<int> v;
-    ifstream f("day2_input.txt");
+    ifstream f("d2_input.txt");
     while (f >> x) {
         v.push_back(x);
         if (f.peek() == ',')

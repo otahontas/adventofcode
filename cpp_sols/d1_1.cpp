@@ -6,7 +6,7 @@ using namespace std;
 int main() {
     int x;
     int sum = 0;
-    ifstream f("day1_input.txt");
+    ifstream f("d1.txt");
     while (f >> x) {
         sum += (x / 3) - 2;
     }
