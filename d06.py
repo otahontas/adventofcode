@@ -19,7 +19,7 @@ def find_paths(g):
     q.append(('COM', 0))
 
     while q:
-        n,l = q.pop(0)
+        n, l = q.pop(0)
         if n in g:
             for ne in g[n]:
                 if ne not in v:
@@ -36,7 +36,7 @@ def find_shortest(g):
     q.append(('YOU', 0))
 
     while q:
-        n,l = q.pop()
+        n, l = q.pop()
         if n in g:
             for ne in g[n]:
                 if ne == 'SAN':

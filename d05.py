@@ -1,4 +1,4 @@
-def run(a):
+def run(a, inp):
     i = 0
     while True:
         o = []
@@ -15,7 +15,7 @@ def run(a):
 
         if opcode == '03' or opcode == '04':
             if opcode == '03':
-                a[a[i+1]] = int(input())
+                a[a[i+1]] = inp
             else:
                 v = a[a[i+1]] if o[2] == 0 else a[i+1]
                 print(v)
@@ -44,6 +44,6 @@ def run(a):
 
 a = [int(x) for x in open('d05.txt').read().strip().split(',')]
 # first
-run(a[:])
+run(a[:],1)
 # second
-run(a[:])
+run(a[:],5)
