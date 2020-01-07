@@ -14,7 +14,7 @@ def find_solution(a, solution):
             if check_first(a[:]) == solution:
                 return 100*i+j
 
-a = [int(x) for x in open('d02.txt').read().strip().split(',')]
+a = [int(x) for x in open('inputs/d02.txt').read().strip().split(',')]
 a[1] = 12
 a[2] = 2
 print(check_first(a[:]))

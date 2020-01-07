@@ -13,7 +13,7 @@ def get_points(w):
             points[(x, y)] = steps
     return points
 
-fw, sw, last = open('d03.txt').read().split('\n')
+fw, sw, last = open('inputs/d03.txt').read().split('\n')
 fw, sw = [x.split(',') for x in [fw, sw]]
 
 fw_points = get_points(fw)
