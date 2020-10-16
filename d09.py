@@ -1,10 +1,12 @@
-import computer.comp as comp
+from comp import Comp
 
-def main():
-    a = [int(x) for x in open('d09.txt').read().strip().split(',')]
-    print(a)
-    c = comp.Comp(a)
-    c.run()
+a = [int(x) for x in open("inputs/d09.txt").read().strip().split(",")]
+c = Comp(a)
+c.add_one_input(1)
+c.run()
+c.print_outputs()
 
-if __name__ == "__main__":
-    main()
+c2 = Comp(a)
+c2.add_one_input(2)
+c2.run()
+c2.print_outputs()
