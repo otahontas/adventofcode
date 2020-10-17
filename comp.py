@@ -139,8 +139,14 @@ class Comp:
     def get_one_output(self):
         return self.outputs.popleft()
 
+    def get_all_outputs(self):
+        return self.outputs
+
     def add_one_input(self, value):
         self.inputs.append(value)
 
     def is_halted(self):
         return self.halted
+
+    def restart(self):
+        self.halted = False
