@@ -69,10 +69,10 @@ while paths:
     for dist, adj_node, req in graph[node]:
         if req <= collected:
             new_collected = collected | frozenset([adj_node])
-            total_dist = steps + dist
-            best_so_far = fastest[(adj_node, new_collected)]
-            if not best_so_far or total_dist < best_so_far:
-                fastest[(adj_node, new_collected)] = total_dist
-                paths.put((total_dist, adj_node, new_collected))
+            total = steps + dist
+            best = fastest[(adj_node, new_collected)]
+            if not best or total < best:
+                fastest[(adj_node, new_collected)] = total
+                paths.put((total, adj_node, new_collected))
 
 # part 2
