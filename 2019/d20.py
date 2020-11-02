@@ -87,10 +87,3 @@ def part1():
 
 
 print(part1())
-
-
-def part2():
-    pass
-
-
-print(part2())
