@@ -40,8 +40,7 @@ class Moon:
 moons = [Moon(line) for line in open("inputs/d12.txt").read().splitlines()]
 
 
-# First
-def calc_one_step():
+def calc_one_step(moons):
 
     for moon in moons:
         for other_moon in moons:
@@ -52,21 +51,19 @@ def calc_one_step():
     for moon in moons:
         moon.apply_velocity()
 
+    return moons
 
-for _ in range(1000):
-    calc_one_step()
+def first(moons):
+    for _ in range(1000):
+        moons = calc_one_step(moons)
 
-print(sum(moon.calc_total() for moon in moons))
-
-# Second
-moons = [Moon(line) for line in open("inputs/d12.txt").read().splitlines()]
+    print(sum(moon.calc_total() for moon in moons))
 
 
-def find_match():
+def second(moons):
     hist_x = {}
     hist_y = {}
     hist_z = {}
-
     steps = 0
     x_steps = 0
     y_steps = 0
@@ -74,7 +71,7 @@ def find_match():
 
     # simulate and if axis pos & vel seen, count the diff between this and last time
     while True:
-        calc_one_step()
+        moons = calc_one_step(moons)
         steps += 1
 
         if x_steps == 0:
@@ -111,5 +108,5 @@ def find_match():
     res = int((abs(tmp * z_steps) / math.gcd(tmp, z_steps)))
     print(res)
 
-
-find_match()
+first(moons)
+second(moons)

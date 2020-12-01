@@ -2,9 +2,6 @@ import math
 
 recipes = open("inputs/d14.txt").read().splitlines()
 
-# First
-
-
 def get_ore_count(fuel_needed):
     chems = {}
     for recipe in recipes:
@@ -44,17 +41,16 @@ def get_ore_count(fuel_needed):
         if should_break:
             return chems["ORE"]["created"]
 
+def first():
+    ans = get_ore_count(1)
+    print(ans)
+    return ans
 
-ans_1 = get_ore_count(1)
-print(ans_1)
 
-# second
-
-
-def bin_search(ans_1):
+def second(start):
     ores = 1000000000000
 
-    a = ores // ans_1
+    a = ores // start
     b = 2 * a
 
     while b > a + 1:
@@ -65,8 +61,7 @@ def bin_search(ans_1):
         else:
             b = m
 
-    return a
+    print(a)
 
-
-ans_2 = bin_search(ans_1)
-print(ans_2)
+ans = first()
+second(ans)

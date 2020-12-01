@@ -3,12 +3,8 @@ import time
 
 a = [int(x) for x in open("inputs/d13.txt").read().split(",")]
 a[0] = 2
-
-# First
 grid = [[0] * 40 for _ in range(25)]
-
 c = Comp(a)
-c.run()
 
 
 def print_grid(grid):
@@ -42,29 +38,30 @@ def count_grid(count_blocks=False):
                 if output == 4:
                     ball = (x, y)
         i += 1
-    print_grid(grid)
     if count_blocks:
         print(blocktile_count)
     return (ball, paddle, score)
 
-
-# First
-ball, paddle, score = count_grid(count_blocks=True)
-
-# Second
-
-final_score = score
-
-c.restart()
-while not c.is_halted():
-    if ball[0] < paddle[0]:
-        c.add_one_input(-1)
-    elif ball[0] > paddle[0]:
-        c.add_one_input(1)
-    else:
-        c.add_one_input(0)
+def first():
     c.run()
-    ball, paddle, score = count_grid()
-    final_score = max(final_score, score)
+    return count_grid(count_blocks=True)
 
-print(final_score)
+def second(ball, paddle, score):
+    final_score = score
+    c.restart()
+    while not c.is_halted():
+        if ball[0] < paddle[0]:
+            c.add_one_input(-1)
+        elif ball[0] > paddle[0]:
+            c.add_one_input(1)
+        else:
+            c.add_one_input(0)
+        c.run()
+        ball, paddle, score = count_grid()
+        final_score = max(final_score, score)
+
+    print(final_score)
+
+
+ball, paddle, score = first()
+second(ball, paddle, score)

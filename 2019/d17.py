@@ -1,58 +1,60 @@
 from comp import Comp
+import collections
 
 a = [int(x) for x in open("inputs/d17.txt").read().split(",")]
+grid = []
+w = 0
+h = 0
 
-# process
-c = Comp(a)
-c.run()
+def first():
+    global grid
+    global w
+    global h
+    c = Comp(a)
+    c.run()
 
-sa = []
-while c.outputs:
-    sa.append(chr(c.get_one_output()))
+    sa = []
+    while c.outputs:
+        sa.append(chr(c.get_one_output()))
+    
+    s = "".join(sa)
+    grid = s.splitlines()
+    grid = grid[:-1]
+    
+    w = len(grid[0])
+    h = len(grid)
 
-s = "".join(sa)
-grid = s.splitlines()
-grid = grid[:-1]
 
-w = len(grid[0])
-h = len(grid)
-
-
-# First
-def is_intersection(y, x):
-    if y < 1 or x < 1 or y > h - 2 or x > w - 2:
+    def is_intersection(y, x):
+        if y < 1 or x < 1 or y > h - 2 or x > w - 2:
+            return False
+        if (
+            grid[y][x] == "#"
+            and grid[y - 1][x] == "#"
+            and grid[y + 1][x] == "#"
+            and grid[y][x - 1] == "#"
+            and grid[y][x + 1] == "#"
+        ):
+            return True
         return False
-    if (
-        grid[y][x] == "#"
-        and grid[y - 1][x] == "#"
-        and grid[y + 1][x] == "#"
-        and grid[y][x - 1] == "#"
-        and grid[y][x + 1] == "#"
-    ):
-        return True
-    return False
 
+    ans = 0
+    start = (0, 0)
 
-ans = 0
+    for y in range(h):
+        for x in range(w):
+            if grid[y][x] == "^":
+                start = (y, x)
+            if is_intersection(y, x):
+                ans += y * x
+    
+    print(ans)
+    return start
 
-start = (0, 0)
+def second(p):
+    dirs = {"U": (-1, 0), "R": (0, 1), "D": (1, 0), "L": (0, -1)}
+    visited = set()
 
-for y in range(h):
-    for x in range(w):
-        # get start for part 2
-        if grid[y][x] == "^":
-            start = (y, x)
-        if is_intersection(y, x):
-            ans += y * x
-
-print(ans)
-
-# Second
-dirs = {"U": (-1, 0), "R": (0, 1), "D": (1, 0), "L": (0, -1)}
-visited = set()
-
-
-def get_path(p):
     def is_ok(p, move):
         new_point = (p[0] + dirs[d][0], p[1] + dirs[d][1])
         y = new_point[0]
@@ -83,9 +85,7 @@ def get_path(p):
             return "R" if new_dir == "D" else "L"
 
     path = []
-
     prev_dir = "U"
-
     while True:
         d = find_next_dir(p)
         if not d:
@@ -101,46 +101,33 @@ def get_path(p):
             steps += 1
         path.append(str(steps))
 
-    return path
+    # Print path
+    print(",".join(path))
 
+    # Based on previous print result, check what routines to use. Mine are:
+    M = "A,A,B,C,C,A,C,B,C,B"
+    A = "L,4,L,4,L,6,R,10,L,6"
+    B = "L,12,L,6,R,10,L,6"
+    C = "R,8,R,10,L,6"
 
-path = get_path(start)
-# print(",".join(path))
+    a[0] = 2
+    c = Comp(a)
 
+    def give_ascii_input(s, c):
+        for asc in s:
+            c.add_one_input(ord(asc))
+        c.add_one_input(10)  # add line break
+    give_ascii_input(M, c)
+    give_ascii_input(A, c)
+    give_ascii_input(B, c)
+    give_ascii_input(C, c)
+    give_ascii_input("n", c)
 
-# hardcoded routines based on result from above:
-# "L,4,L,4,L,6,R,10,L,6"
-# "L,4,L,4,L,6,R,10,L,6"
-# "L,12,L,6,R,10,L,6"
-# "R,8,R,10,L,6"
-# "R,8,R,10,L,6"
-# "L,4,L,4,L,6,R,10,L,6"
-# "R,8,R,10,L,6"
-# "L,12,L,6,R,10,L,6"
-# "R,8,R,10,L,6"
-# "L,12,L,6,R,10,L,6"
-# So:
-M = "A,A,B,C,C,A,C,B,C,B"
-A = "L,4,L,4,L,6,R,10,L,6"
-B = "L,12,L,6,R,10,L,6"
-C = "R,8,R,10,L,6"
+    c.run()
+    o = c.get_all_outputs()
+    for output in o:
+        if output > 127:
+            print( output)
 
-a[0] = 2
-c = Comp(a)
-
-
-def give_ascii_input(s, c):
-    for asc in s:
-        c.add_one_input(ord(asc))
-    c.add_one_input(10)  # add line break
-
-
-give_ascii_input(M, c)
-give_ascii_input(A, c)
-give_ascii_input(B, c)
-give_ascii_input(C, c)
-give_ascii_input("n", c)
-
-# print last output as ans
-c.run()
-print(list(c.outputs)[-1])
+start = first()
+second(start)

@@ -63,5 +63,5 @@ def paint(start_from_white = False):
         print(len(colored))
 
 
-paint()  # first
-paint(start_from_white=True)  # second
+paint()
+paint(start_from_white=True)
