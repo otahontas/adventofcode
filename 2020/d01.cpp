@@ -5,14 +5,8 @@ using namespace std;
 
 typedef long long ll;
 typedef vector<ll> vll;
-//typedef vector<ll> vll;
-//typedef pair<int, int> pi;
-//typedef vector<pi> vpi;
 
 #define REP(i,a,b) for (int i = a; i < b; i++)
-#define RREP(i,a,b) for (int i = a; i <= b; i++)
-#define F first
-#define S second
 #define PB push_back
 
 int n;
