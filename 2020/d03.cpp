@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <sstream>
-#include <string>
 
 using namespace std;
 
@@ -10,7 +8,6 @@ typedef long long ll;
 typedef vector<string> vs;
 typedef vector<int> vi;
 
-#define REP(i,a,b) for (int i = a; i < b; i++)
 #define DREP(i,a,b) for (int i = a; i < b; i+=2)
 #define PB push_back
 

@@ -3,24 +3,14 @@
 #include <algorithm>
 #include <sstream>
 #include <string>
-#include <set>
 #include <map>
 
 using namespace std;
 
-typedef long long ll;
-typedef pair<int, int> pi;
 typedef vector<int> vi;
 typedef vector<string> vs;
-typedef vector<ll> vll;
-typedef vector<pi> vpi;
-typedef set<int> si;
 
 #define REP(i,a,b) for (int i = a; i < b; i++)
-#define DREP(i,a,b) for (int i = a; i < b; i+=2)
-#define RREP(i,a,b) for (int i = a; i <= b; i++)
-#define F first
-#define S second
 #define PB push_back
 
 int n;
@@ -88,8 +78,6 @@ int main() {
             most_frequent_minute_amount = most_frequent_minute_amount_for_this;
             most_frequent_id = it->first;
             most_frequent_minute = most_frequent_minute_for_this;
-            cout << "id: " << most_frequent_id << " + stats: ";
-            cout << most_frequent_minute << ", " << most_frequent_minute_amount << "\n";
         }
         it++;
     }

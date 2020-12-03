@@ -25,12 +25,13 @@ def calc_pos(pos, n):
 
 def calc_num(pos, n, reps):
     # Calculate num given the goal position
-    a, b= 1, 0
+    a, b = 1, 0 # multipliers for calculating the final score from position
+    # calculations are done modulo n (deck size)
     for line in lines:
         command, *args = line.split(" ")
         if command == "deal":
             if args[0] == "into":
-                a,b = -a, b-a
+                a, b = -a, b-a
             else:
                 inc = int(args[2])
                 a, b = a * pow(inc, -1, n), b
@@ -39,7 +40,8 @@ def calc_num(pos, n, reps):
             a, b = a, b + cut * a
     a %= n
     b %= n
-    ans = (pow(a,reps, n) * pos + (1 - pow(a, reps, n)) * pow(1 - a, -1, n) * b) % n
+    c = pow(a, reps, n)
+    ans = (c * pos + (1 - c) * pow(1-a, -1, n) * b) % n
     return ans
 
 lines = open("inputs/d22.txt").readlines()
