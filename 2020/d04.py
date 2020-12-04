@@ -1,5 +1,3 @@
-import collections
-import math
 import re
 
 inp = open("inputs/d04.txt").read().split('\n\n')
@@ -37,14 +35,14 @@ def is_valid(fields):
                 return False
     return True
 
-ans_1 = 0
-ans_2 = 0
+ans1 = 0
+ans2 = 0
 for line in inp:
     fields = re.findall(r'(\w+):(\S+)', line)
     valid_fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
     if all(x in [y[0] for y in fields] for x in valid_fields):
-        ans_1 += 1
+        ans1 += 1
         if is_valid(fields):
-            ans_2 += 1
-print(ans_1)
-print(ans_2)
+            ans2 += 1
+print(ans1)
+print(ans2)

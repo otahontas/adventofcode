@@ -1,6 +1,6 @@
+inp = open("inputs/d08.txt").read().strip()
 w = 25
 t = 6
-inp = open("inputs/d08.txt").read().strip()
 
 def first():
     layers = list(map("".join, zip(*[iter(inp)] * (w * t))))

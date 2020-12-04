@@ -1,5 +1,1 @@
-Advent of code 2020 solutions, written in C++. 
-
-Usage: 
-- compile script, e.g. `g++ -std=c++17 -Wall -Wextra -Wshadow d01.cpp -o d01 -O2`
-- run with input passed to stdin, e.g `./d01 < inputs/d01.txt`
+Advent of code 2019 solutions, written in python. Solutions should be working fine by just running them, no need for extra inputs / libraries etc. Using `pypy3` as python interpreter will make most of the solutions run a lot faster, so I'll encourage you to test it out.

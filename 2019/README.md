@@ -3,4 +3,4 @@ Advent of code 2019 solutions, written in python. Solutions should be working fi
 Almost ready, following are missing:
 - d18 pt. 2
 - d20 pt. 2
-- d22-d25
+- d23-d25

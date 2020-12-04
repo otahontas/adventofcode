@@ -1,12 +1,11 @@
 import math
-from typing import Dict, Tuple
 
 
 # Init stuff
 space = [line.strip("\n") for line in open("inputs/d10.txt")]
 w = len(space[0])
 h = len(space)
-asteroids: Dict[Tuple[int, int], int] = {}
+asteroids = {}
 
 
 def first():
