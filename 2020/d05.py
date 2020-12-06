@@ -1,5 +1,3 @@
-import re
-
 lines=open("inputs/d05.txt").read().splitlines()
 
 replace = {ord(k): ord(v) for (k,v) in {"F": "0", "B": "1", "L": "0", "R": "1"}.items()}

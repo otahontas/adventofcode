@@ -9,11 +9,10 @@ def travel(add_x,add_y):
     counter = 0
     while True:
         x += add_x
+        x %= w
         y += add_y
         if (y >= h):
             break
-        if (x >= w):
-            x %= w
         if (grid[y][x]  == "#"):
             counter += 1
     return counter
