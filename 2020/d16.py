@@ -46,4 +46,5 @@ while potential:
 my_ticket_values = notes[1].splitlines()[1].split(",")
 values = [int(value) for field, value in enumerate(my_ticket_values) if fields[field].startswith("departure")]
 
+print(error)
 print(reduce(lambda x,y: x*y, values))
