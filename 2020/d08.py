@@ -30,13 +30,16 @@ class Comp:
         if terminated:
             print(self.accumulator)
 
-instructions = re.findall(r'(\w+) ([\+-]\d+)', open("inputs/d08.txt").read())
+
+instructions = re.findall(r"(\w+) ([\+-]\d+)", open("inputs/d08.txt").read())
+
 
 def first():
     tape = [(op, int(arg)) for op, arg in instructions]
     c = Comp(tape)
     c.run()
     print(c.accumulator)
+
 
 def second():
     tape = [(op, int(arg)) for op, arg in instructions]
@@ -47,6 +50,7 @@ def second():
         new_tape[i] = ("nop", arg) if op == "jmp" else new_tape[i]
         c = Comp(new_tape)
         c.run()
+
 
 first()
 second()

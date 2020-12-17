@@ -30,13 +30,13 @@ def do_one_round(grid, mode):
             if grid[y][x] == "L":
                 return False
 
-    directions = [(-1,0), (-1, 1), (0, 1), (1,1), (1,0), (1,-1), (0, -1), (-1, -1)]
+    directions = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
     for y in range(h):
         for x in range(w):
             if grid[y][x] == ".":
                 continue
             occupied_count = 0
-            point = (y,x)
+            point = (y, x)
 
             for direction in directions:
                 if mode == "first":
@@ -59,6 +59,7 @@ def do_one_round(grid, mode):
         return False, sum([row.count("#") for row in new_grid])
     return True, new_grid
 
+
 def solve(mode):
     grid = [list(line) for line in open("inputs/d11.txt").read().splitlines()]
     while True:
@@ -66,6 +67,7 @@ def solve(mode):
         if not did_change:
             return result
         grid = result
+
 
 print(solve("first"))
 print(solve("second"))

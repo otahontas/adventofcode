@@ -7,7 +7,7 @@ notes = open("inputs/d16.txt").read().strip().split("\n\n")
 rules = []
 for note in notes[0].strip().splitlines():
     rule, ranges = note.split(": ")
-    for low, up in re.findall(r'(\d+)-(\d+)', ranges):
+    for low, up in re.findall(r"(\d+)-(\d+)", ranges):
         rules.append((int(low), int(up), rule))
 
 error = 0
@@ -44,7 +44,11 @@ while potential:
         potential[field].remove(rule)
 
 my_ticket_values = notes[1].splitlines()[1].split(",")
-values = [int(value) for field, value in enumerate(my_ticket_values) if fields[field].startswith("departure")]
+values = [
+    int(value)
+    for field, value in enumerate(my_ticket_values)
+    if fields[field].startswith("departure")
+]
 
 print(error)
-print(reduce(lambda x,y: x*y, values))
+print(reduce(lambda x, y: x * y, values))

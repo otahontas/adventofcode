@@ -2,13 +2,14 @@ nums = [int(x) for x in open("inputs/d09.txt").read().splitlines()]
 offset = 25
 n = len(nums)
 
+
 def first():
     for i in range(offset, n):
         start = i - offset
         stop = i
         sum_found = False
         for k in range(start, stop):
-            if sum_found: 
+            if sum_found:
                 break
             for j in range(k, stop):
                 if nums[k] + nums[j] == nums[i]:
@@ -18,12 +19,13 @@ def first():
             print(nums[i])
             return nums[i]
 
+
 def second(invalid):
     found = False
-    for i in range(n-1):
+    for i in range(n - 1):
         if found:
             break
-        s = [nums[i], nums[i+1]]
+        s = [nums[i], nums[i + 1]]
         i += 2
         while True:
             if sum(s) == invalid:
@@ -34,6 +36,7 @@ def second(invalid):
                 break
             s.append(nums[i])
             i += 1
+
 
 invalid = first()
 second(invalid)
