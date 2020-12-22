@@ -2,6 +2,7 @@ import re
 
 lines = open("inputs/d18.txt").read().strip().splitlines()
 
+
 def solve(mode):
     regexes = (
         ["\(\d+ [\*|\+] \d+\)", "\d+ [\*|\+] \d+"]
@@ -23,6 +24,7 @@ def solve(mode):
                 nums.append(int(line))
                 break
     print(sum(nums))
+
 
 solve("first")
 solve("second")

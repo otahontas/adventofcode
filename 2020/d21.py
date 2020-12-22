@@ -19,8 +19,7 @@ for line in lines:
 
 # part 1
 allergenic_foods = reduce(lambda x, y: {*x, *y}, potential.values())
-print(sum(v for k, v in Counter(all_foods).items()
-          if k not in allergenic_foods))
+print(sum(v for k, v in Counter(all_foods).items() if k not in allergenic_foods))
 
 # part 2
 final_allergens = []

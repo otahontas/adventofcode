@@ -7,6 +7,7 @@ for rule in rules_tmp.splitlines():
     rules[k] = v[1] if "a" in v or "b" in v else v
 mode = "first"
 
+
 def get_regex(start):
     if mode == "second":
         if start == "8":
@@ -14,8 +15,10 @@ def get_regex(start):
         if start == "11":
             final_rule = "(?:"
             inner = []
-            for i in range(1,5):
-                inner.append(get_regex("42") + f"{{{i}}}" + get_regex("31") + f"{{{i}}}")
+            for i in range(1, 5):
+                inner.append(
+                    get_regex("42") + f"{{{i}}}" + get_regex("31") + f"{{{i}}}"
+                )
             final_rule += "|".join(inner)
             final_rule += ")"
             return final_rule
@@ -30,15 +33,18 @@ def get_regex(start):
     final_rule += ")"
     return final_rule
 
+
 def first():
     reg = get_regex("0")
     print(sum(bool(re.fullmatch(reg, r)) for r in received.splitlines()))
+
 
 def second():
     global mode
     mode = "second"
     reg = get_regex("0")
     print(sum(bool(re.fullmatch(reg, r)) for r in received.splitlines()))
+
 
 first()
 second()
