@@ -4,6 +4,7 @@ lines = open("inputs/d18.txt").read().strip().splitlines()
 
 
 def solve(mode):
+    # TODO: Doesn't work on all inputs, try to fix
     regexes = (
         ["\(\d+ [\*|\+] \d+\)", "\d+ [\*|\+] \d+"]
         if mode == "first"

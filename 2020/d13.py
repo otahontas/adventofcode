@@ -12,7 +12,6 @@ def first():
 
 
 def second():
-    # Chinese remainder code from Rosetta code:
     def chinese_remainder(n, a):
         sum = 0
         prod = reduce(lambda a, b: a * b, n)

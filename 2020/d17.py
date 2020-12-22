@@ -4,6 +4,7 @@ input_grid = [list(x) for x in open("inputs/d17.txt").read().splitlines()]
 
 
 def solve(mode):
+    # TODO: this is slow brute-force, pypy needed. Try to create faster version
     n = 26
 
     def create_grid():
