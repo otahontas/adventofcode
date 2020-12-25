@@ -1,20 +1,19 @@
-groups = [line.strip() for line in open("inputs/d06.txt").read().split("\n\n")]
+from aocd import data
 
 
-def first():
-    ans = sum(len(set(c for c in group if c.isalpha())) for group in groups)
-    print(ans)
+def main() -> None:
+    groups = data.split("\n\n")
+    first, second = 0, 0
+
+    for answers in groups:
+        answer_ids = {answer for answer in answers if answer.isalpha()}
+        first += len(answer_ids)
+        for person in answers.split("\n"):
+            answer_ids &= set(person)
+        second += len(answer_ids)
+    print("Part 1:", first)
+    print("Part 2:", second)
 
 
-def second():
-    ans = 0
-    for group in groups:
-        used = set(c for c in group if c.isalpha())
-        for person in group.split("\n"):
-            used = used.intersection(set(c for c in person))
-        ans += len(used)
-    print(ans)
-
-
-first()
-second()
+if __name__ == "__main__":
+    main()

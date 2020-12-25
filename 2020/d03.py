@@ -1,27 +1,30 @@
-grid = open("inputs/d03.txt").read().splitlines()
-h = len(grid)
-w = len(grid[0])
+from aocd import lines
 
 
-def travel(add_x, add_y):
-    x = 0
-    y = 0
-    counter = 0
+def travel(slope: tuple[int, int], grid: list[str]) -> int:
+    x, y, counter = 0, 0, 0
+    height, width = len(grid), len(grid[0])
+    right, down = slope
+
     while True:
-        x += add_x
-        x %= w
-        y += add_y
-        if y >= h:
+        x = (x + right) % width
+        y += down
+        if y >= height:
             break
         if grid[y][x] == "#":
             counter += 1
+
     return counter
 
 
-ans1 = travel(3, 1)
-ans2 = ans1
-for rep in [(1, 1), (5, 1), (7, 1), (1, 2)]:
-    ans2 *= travel(rep[0], rep[1])
+def main() -> None:
+    ans = travel(slope=(3, 1), grid=lines)
+    print("Part 1:", ans)
 
-print(ans1)
-print(ans2)
+    for slope in [(1, 1), (5, 1), (7, 1), (1, 2)]:
+        ans *= travel(slope=slope, grid=lines)
+    print("Part 2:", ans)
+
+
+if __name__ == "__main__":
+    main()

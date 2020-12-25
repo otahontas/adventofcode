@@ -1,24 +1,25 @@
-nums = [int(x) for x in open("inputs/d01.txt").read().strip().split("\n")]
+from aocd import numbers
 
 
-def first():
-    goal = 2020
-    for i, num1 in enumerate(nums):
-        for num2 in nums[i:]:
-            if num1 + num2 == goal:
-                print(num1 * num2)
-                return
+def first(goal: int) -> int:
+    for i, a in enumerate(numbers):
+        for b in numbers[i:]:
+            if a + b == goal:
+                return a * b
 
 
-def second():
-    goal = 2020
-    for i, num1 in enumerate(nums):
-        for j, num2 in enumerate(nums[i:]):
-            for num3 in nums[j:]:
-                if num1 + num2 + num3 == goal:
-                    print(num1 * num2 * num3)
-                    return
+def second(goal: int) -> int:
+    for i, a in enumerate(numbers):
+        for j, b in enumerate(numbers[i:]):
+            for c in numbers[j:]:
+                if a + b + c == goal:
+                    return a * b * c
 
 
-first()
-second()
+def main() -> None:
+    print("Part 1:", first(goal=2020))
+    print("Part 2:", second(goal=2020))
+
+
+if __name__ == "__main__":
+    main()

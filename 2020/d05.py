@@ -1,16 +1,16 @@
-lines = open("inputs/d05.txt").read().splitlines()
+from aocd import lines
 
-replace = {
-    ord(k): ord(v) for (k, v) in {"F": "0", "B": "1", "L": "0", "R": "1"}.items()
-}
-ids = set()
-for line in lines:
-    line = line.translate(replace)
-    ids.add(int(line, 2))
 
-seat = 0
-while seat in ids or seat + 1 not in ids or seat - 1 not in ids:
-    seat += 1
+def main() -> None:
+    source, dest = "FBLR", "0101"
+    seat_ids = {int(line.translate(line.maketrans(source, dest)), 2) for line in lines}
+    print("Part 1:", max(seat_ids))
 
-print(max(ids))
-print(seat)
+    seat = 0
+    while seat in seat_ids or seat + 1 not in seat_ids or seat - 1 not in seat_ids:
+        seat += 1
+    print("Part 2", seat)
+
+
+if __name__ == "__main__":
+    main()
