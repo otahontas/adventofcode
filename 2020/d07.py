@@ -1,35 +1,54 @@
 import re
-import collections
+from aocd import lines
+from collections import defaultdict
 
-lines = [x.strip() for x in open("inputs/d07.txt").read().splitlines()]
-
-bags = collections.defaultdict(lambda: {})
-for line in lines:
-    container, content_as_list = line.split(" bags contain ")
-    contents = re.findall(r"(\d+) ([\w\s]+(?= ))", content_as_list)
-    for amount, bag_name in contents:
-        bags[container][bag_name] = int(amount)
+Node = str
+Edge = tuple[Node, int]
+Graph = dict[Node, list[Edge]]
 
 
-def dfs1(bag):
-    if bag == "shiny gold":
-        return True
-    if bag not in bags:
-        return False
-    has_gold = False
-    for inner in bags[bag]:
-        has_gold |= dfs1(inner)
-    return has_gold
+def create_graphs(rules: list[str]) -> tuple[Graph, Graph]:
+    graph: dict[str, list[Edge]] = defaultdict(list)
+    reversed_graph: dict[str, list[Edge]] = defaultdict(list)
+    for rule in rules:
+        container, content = rule.split(" bags contain ")
+        content = re.findall(r"(\d+) ([\w\s]+(?= ))", content)
+        for amount, bag in content:
+            graph[container].append((bag, int(amount)))
+            reversed_graph[bag].append((container, int(amount)))
+    return graph, reversed_graph
 
 
-def dfs2(bag, amount):
-    if bag not in bags:
-        return amount
-    new = 0 if bag == "shiny gold" else amount
-    for content, num in bags[bag].items():
-        new += dfs2(content, num * amount)
-    return new
+def first(graph: Graph) -> int:
+    def dfs(bag: str) -> None:
+        if bag in seen:
+            return
+        seen.add(bag)
+        for content, _ in graph[bag]:
+            dfs(content)
+
+    seen = set()
+    dfs("shiny gold")
+    return len(seen) - 1
 
 
-print(sum([dfs1(bag) for bag in bags.keys() if bag != "shiny gold"]))
-print(dfs2("shiny gold", 1))
+def second(graph: Graph) -> int:
+    def dfs(bag: str, amount: int) -> int:
+        if bag not in graph:
+            return amount
+        new = 0 if bag == "shiny gold" else amount
+        for content, num in graph[bag]:
+            new += dfs(content, num * amount)
+        return new
+
+    return dfs("shiny gold", 1)
+
+
+def main() -> None:
+    graph, reversed_graph = create_graphs(rules=lines)
+    print("Part 1:", first(graph=reversed_graph))
+    print("Part 2:", second(graph=graph))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,27 +1,31 @@
+from aocd import numbers
 from collections import defaultdict
 
-nums = [int(x) for x in open("inputs/d10.txt").read().splitlines()]
-nums.sort()
 
-
-def first():
+def first(joltages: list[int]) -> int:
     diffs = defaultdict(int)
     prev = 0
-    for num in nums:
-        diffs[num - prev] += 1
-        prev += num - prev
+    for joltage in joltages:
+        diffs[joltage - prev] += 1
+        prev += joltage - prev
     diffs[3] += 1
-    print(diffs[1] * diffs[3])
+    return diffs[1] * diffs[3]
 
 
-def second():
+def second(joltages: list[int]) -> int:
     ways = defaultdict(int)
     ways[0] = 1
-    for num in [0, *nums]:
+    for joltage in [0, *joltages]:
         for i in [1, 2, 3]:
-            ways[num + i] += ways[num]
-    print(ways[max(ways.keys())])
+            ways[joltage + i] += ways[joltage]
+    return ways[max(ways.keys())]
 
 
-first()
-second()
+def main() -> None:
+    joltages = sorted(numbers)
+    print("Part 1:", first(joltages=joltages))
+    print("Part 2:", second(joltages=joltages))
+
+
+if __name__ == "__main__":
+    main()

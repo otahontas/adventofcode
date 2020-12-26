@@ -1,16 +1,18 @@
-from dataclasses import dataclass
-from typing import List, Tuple
 import re
+from aocd import data
+from dataclasses import dataclass
+from typing import Optional
+
+Tape = list[tuple[str, int]]
 
 
 @dataclass
 class Comp:
-
-    tape: List[Tuple[str, int]]
+    tape: Tape
     accumulator: int = 0
     head: int = 0
 
-    def run(self):
+    def run(self, mode: str = "first") -> Optional[int]:
         seen = set()
         terminated = False
         while self.head not in seen:
@@ -27,30 +29,33 @@ class Comp:
                 self.head += arg
             elif op == "nop":
                 self.head += 1
-        if terminated:
-            print(self.accumulator)
+        if terminated or mode == "first":
+            return self.accumulator
 
 
-instructions = re.findall(r"(\w+) ([\+-]\d+)", open("inputs/d08.txt").read())
-
-
-def first():
-    tape = [(op, int(arg)) for op, arg in instructions]
+def first(tape: Tape) -> int:
     c = Comp(tape)
-    c.run()
-    print(c.accumulator)
+    return c.run()
 
 
-def second():
-    tape = [(op, int(arg)) for op, arg in instructions]
-    for i, inst in enumerate(tape):
+def second(tape: Tape) -> int:
+    for i, instruction in enumerate(tape):
         new_tape = tape[:]
-        op, arg = inst
+        op, arg = instruction
         new_tape[i] = ("jmp", arg) if op == "nop" else new_tape[i]
         new_tape[i] = ("nop", arg) if op == "jmp" else new_tape[i]
         c = Comp(new_tape)
-        c.run()
+        value = c.run(mode="second")
+        if value:
+            return value
 
 
-first()
-second()
+def main() -> None:
+    instructions = re.findall(r"(\w+) ([\+-]\d+)", data)
+    tape = [(op, int(arg)) for op, arg in instructions]
+    print("Part 1:", first(tape[:]))
+    print("Part 2:", second(tape[:]))
+
+
+if __name__ == "__main__":
+    main()
