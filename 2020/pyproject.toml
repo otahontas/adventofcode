@@ -5,11 +5,15 @@ description = "Advent of code 2020 solutions in python"
 authors = ["Otto Ahoniemi <otto@ottoahoniemi.fi>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8, <3.9"
 advent-of-code-data = "^0.9.7"
 sympy = "^1.7.1"
 jupyter = "^1.0.0"
 networkx = "^2.5"
+nb-black = "^1.0.7"
+numpy = "^1.19.4"
+black = "^20.8b1"
+numba = "^0.52.0"
 
 [tool.poetry.dev-dependencies]
 
