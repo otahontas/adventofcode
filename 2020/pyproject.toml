@@ -14,6 +14,9 @@ nb-black = "^1.0.7"
 numpy = "^1.19.4"
 black = "^20.8b1"
 numba = "^0.52.0"
+scipy = "^1.6.0"
+mypy-ipython = "^20.8.0"
+marshmallow = "^3.10.0"
 
 [tool.poetry.dev-dependencies]
 
