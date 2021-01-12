@@ -1,7 +1,13 @@
-Advent of code 2019 solutions, written in python. Solutions should be working fine by just running them, no need for extra inputs / libraries etc. Using `pypy3` as python interpreter will make most of the solutions run a lot faster, so I'll encourage you to test it out.
+# Advent of Code 2019 (C++)
 
-Almost ready, following are missing:
-- d18 pt. 2
-- d20 pt. 2
-- d24
-- d25
+Notes:
+- Each `dayxx` -file contains solutions with explanations.
+- Solutions also include basic tests against example inputs.
+- Source file (i.e header & implementation) `aoc` contains aoc-spesific shared
+classes and functions, such as I/O and IntCode computer.
+- Source file (i.e header & implementation) `dsalgolib` contains different data
+structures and algorithms that are used in solutions, but are not available in c++
+standard library.
+- Code style follows [Google C++ Style Guide](
+https://google.github.io/styleguide/cppguide.html).
+- To run spesific day, execute `make dayxx && ./dayxx`.
