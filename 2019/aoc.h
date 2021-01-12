@@ -30,6 +30,11 @@ namespace aoc {
             int ValueAtAddress(int address);
     };
 
+    // Functions to read inputs for given day
     std::vector<int> ReadInputToInts(int day);
     std::vector<std::string> ReadInputToLines(int day);
+    std::string ReadInputToLine(int day);
+
+    // Helper functions to reformat inputs 
+    std::vector<int> StringToInts(std::string s);
 }

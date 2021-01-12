@@ -43,6 +43,8 @@ PointMap CollectVisitedPoints(std::string wire_path) {
     return visited;
 }
 
+// Get points where wires intersect, then find point with lowest manhattan distance
+// to (0,0) and point reached with lowest number of steps.
 aoc::Solution SolveParts(std::vector<std::string> lines) {
     PointMap intersection = Intersection(
             CollectVisitedPoints(lines[0]),

@@ -14,3 +14,6 @@ day02: day02.cpp aoc.o
 
 day03: day03.cpp aoc.o dsalgos.o
 	$(CXX) $(CXXFLAGS) day03.cpp aoc.o dsalgos.o -o $@
+
+day04: day04.cpp aoc.o
+	$(CXX) $(CXXFLAGS) day04.cpp aoc.o -o $@

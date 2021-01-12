@@ -16,12 +16,14 @@ std::ifstream OpenFilestream(int day) {
 }
 
 namespace aoc {
+    // Solution methods
     std::ostream& operator<<(std::ostream& os, const Solution& st) {
         os << "Part 1: " << st.part_one << "\n";
         os << "Part 2: " << st.part_two << "\n";
         return os;
     };
 
+    // IntCode Comp methods
     IntCodeComp::IntCodeComp(std::vector<int> initial_tape) {
         tape = initial_tape;
     }
@@ -54,6 +56,7 @@ namespace aoc {
         return tape[address];
     }
 
+    // Input functions
     std::vector<int> ReadInputToInts(int day) {
         std::regex extractor("\\d+");
         std::string line;
@@ -79,4 +82,23 @@ namespace aoc {
         return lines;
     }
 
+    std::string ReadInputToLine(int day) {
+        std::string line;
+        std::ifstream puzzle_input = OpenFilestream(day);
+        getline(puzzle_input, line);
+        return line;
+    }
+
+
+    // Helper functions
+    std::vector<int> StringToInts(std::string s) {
+        std::regex extractor("\\d+");
+        std::vector<int> ints;
+        auto start = std::sregex_iterator(s.begin(), s.end(), extractor);
+        auto end = std::sregex_iterator();
+        for (auto iter = start; iter != end; iter++) {
+            ints.push_back(stoi(iter->str()));
+        }
+        return ints;
+    }
 }
