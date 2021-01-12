@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "aocd-2020-python"
+name = "aoc-2020-python"
 version = "0.1.0"
 description = "Advent of code 2020 solutions in python"
 authors = ["Otto Ahoniemi <otto@ottoahoniemi.fi>"]

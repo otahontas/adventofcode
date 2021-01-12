@@ -1,7 +1,10 @@
-Advent of code solutions for different years:
+# Advent of code solutions
 
-| Year | Language | Format |
-| :--- | :------  | :----- | 
-| 2018 | C++      | Single c++ files, no explanations. |
-| 2019 | Python   | Single python files, no explanations. |
-| 2020 | Python   | Jupyter notebook with full explanations |
+My [advent of code](https://adventofcode.com/) solutions for different years, each
+year implemented with different language. For each year, my goal has been to learn and
+use languge-spesific coding conventions, idioms and project tools.
+
+| Year | Language | Format | Project setup |
+| :--- | :------- | :----- | :------------ |
+| 2019 | C++      | C++ project with explanations in files | Make / makefile |
+| 2020 | Python   | Jupyter notebook with full explanations | Poetry / pyproject.toml |
