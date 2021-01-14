@@ -1,21 +1,27 @@
+#include <algorithm>
 #include <cassert>
 #include <iostream>
-#include <regex>
 #include "aoc.h"
-#include <map>
-#include <algorithm>
 
+// Run validators against number. For the first part, number is valid if it keeps order
+// when sorted and has any two adjacent number. For the second part, code checks
+// that if there are two adjacent numbers, there isn't third adjacent on either side. 
 bool Validate(int num, bool only_allow_two_adj=false) {
     std::string pwd = std::to_string(num);
     std::string pwd_sorted = pwd;
     sort(pwd_sorted.begin(), pwd_sorted.end());
-    if (pwd != pwd_sorted) return false;
+    if (pwd != pwd_sorted) {
+        return false;
+    }
     int n = pwd.size();
     for (int i = 0; i < n - 1; i++) {
         if (pwd[i] == pwd[i+1]) {
-            if (!only_allow_two_adj) return true;
-            if ((i == 0 || pwd[i] != pwd[i-1]) &&
-                (i == n-2 || pwd[i] != pwd[i+2])) return true;
+            if (!only_allow_two_adj) {
+                return true;
+            }
+            if ((i == 0 || pwd[i] != pwd[i-1]) && (i == n-2 || pwd[i] != pwd[i+2])) {
+                return true;
+            }
         }
     }
     return false;
@@ -32,7 +38,7 @@ void Test() {
 }
 
 void Solve() {
-    std::vector<int> num_range = aoc::StringToInts(aoc::ReadInputToLine(4));
+    std::vector<int> num_range = aoc::PositiveIntsFromString(aoc::ReadInputToLine(4));
     aoc::Solution solution;
     for (int i = num_range[0]; i <= num_range[1]; i++) {
         solution.part_one += Validate(i);

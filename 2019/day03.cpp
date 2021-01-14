@@ -22,7 +22,7 @@ PointMap Intersection(PointMap first_map,  PointMap second_map) {
 
 
 // Collect each visited point with steps taken from (0,0) into a map.
-PointMap CollectVisitedPoints(std::string wire_path) {
+PointMap CollectVisitedPoints(std::string &wire_path) {
     std::regex extractor("\\w\\d+");
     PointMap visited;
     dsalgos::Point point;

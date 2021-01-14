@@ -3,7 +3,7 @@
 #include "aoc.h"
 
 // Replace input at positions, report value at position 0.
-int ReportValueForPartOne(std::vector<int> tape) {
+int ReportValueForPartOne(std::vector<int> &tape) {
     tape[1] = 12;
     tape[2] = 2;
     aoc::IntCodeComp comp(tape);
@@ -13,7 +13,7 @@ int ReportValueForPartOne(std::vector<int> tape) {
 
 // Try every possible combination for noun and verb in range 0-99 to find match
 // against goal value.
-int FindValueThatProduceGoal(std::vector<int> tape) {
+int FindValueThatProduceGoal(std::vector<int> &tape) {
     int goal = 19690720;
     for (int i = 0; i <= 99; i++) {
         for (int j = 0; j <= 99; j++) {
