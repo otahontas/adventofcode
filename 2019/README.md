@@ -10,4 +10,5 @@ structures and algorithms that are used in solutions, but are not available in c
 standard library.
 - Code style follows [Google C++ Style Guide](
 https://google.github.io/styleguide/cppguide.html).
-- To run spesific day, execute `make dayxx && ./dayxx`.
+- To build and run spesific day, execute `./run.sh xx`, where `xx` is a two digit
+day number

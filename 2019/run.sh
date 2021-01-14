@@ -1,2 +1,3 @@
 #!/bin/sh
-make day$1 && ./day$1
+[ -d build/ ] || mkdir build/
+make day$1 && ./build/day$1
