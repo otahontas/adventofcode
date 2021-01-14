@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -6,9 +5,8 @@
 
 typedef std::vector<std::vector<int>> Matrix;
 
-// Parse input to matrix where its row is flattened image layer, layer 1 as
-// first row.
-Matrix ParseToMatrix(std::vector<int> &puzzle_input, int width, int length) {
+// Parse input to matrix where its row is flattened image layer, layer 1 as first row.
+Matrix ParseToMatrix(std::vector<int>& puzzle_input, int width, int length) {
     Matrix matrix;
     int size = width * length;
     std::vector<int> row;
@@ -23,12 +21,12 @@ Matrix ParseToMatrix(std::vector<int> &puzzle_input, int width, int length) {
 }
 
 // Find layer with fewest zeros, return number of 1s multiplied by number of 2s.
-int FewestZeros(Matrix &matrix) {
+int FewestZeros(Matrix& matrix) {
     int fewest = INT_MAX;
     int ans = 0;
-    for (int i = 0; i < (int) matrix.size(); i++) {
+    for (auto& layer : matrix) {
         std::vector<int> num_count = { 0, 0, 0};
-        for (auto num : matrix[i]) {
+        for (auto num : layer) {
             num_count[num]++;
         }
         if (num_count[0] < fewest) {
@@ -41,7 +39,7 @@ int FewestZeros(Matrix &matrix) {
 
 // Go through pixel layer-by-layer until 0 or 1 is found. Return vector
 // containing final pixels (flattened).
-std::vector<int> DecodeImage(Matrix &matrix) {
+std::vector<int> DecodeImage(Matrix& matrix) {
     int n = matrix[0].size();
     int layers = matrix.size();
     std::vector<int> flattened_image(n);
@@ -59,7 +57,7 @@ std::vector<int> DecodeImage(Matrix &matrix) {
 }
 
 // Print the flattened image to stdout.
-void PrintDecodedImage(std::vector<int> &image, int width) {
+void PrintDecodedImage(std::vector<int>& image, int width) {
     for (int i = 0; i < (int) image.size(); i++) {
         if (image[i]) {
             std::cout << image[i];
@@ -82,10 +80,9 @@ void Test() {
 }
 
 void Solve() {
-    std::vector<int> puzzle_input = aoc::ReadDigitInputToInts(8);
+    std::vector<int> puzzle_input = aoc::ReadInputToDigits(8);
     int width = 25;
     int length = 6;
-
     Matrix matrix = ParseToMatrix(puzzle_input, width, length);
     std::cout << FewestZeros(matrix) << "\n";
     std::vector<int> image = DecodeImage(matrix);

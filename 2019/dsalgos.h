@@ -14,9 +14,9 @@ namespace dsalgos {
         Point();
         Point(int initial_x, int initial_y); 
 
-        Point& operator+=(const Point &rhs);
-        friend bool operator==(const Point &lhs, const Point &rhs);
-        friend bool operator<(const Point &lhs, const Point &rhs);
+        Point& operator+=(const Point& rhs);
+        friend bool operator==(const Point& lhs, const Point& rhs);
+        friend bool operator<(const Point& lhs, const Point& rhs);
     };
 
     // Point for each direction, useful when moving a point to some direction.

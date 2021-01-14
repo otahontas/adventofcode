@@ -12,16 +12,16 @@ namespace dsalgos {
         y = initial_y;
     }
     
-    Point& Point::operator+=(const Point &rhs) {
+    Point& Point::operator+=(const Point& rhs) {
         this->x += rhs.x;
         this->y += rhs.y;
         return *this;
     };
 
-    bool operator==(const Point &lhs, const Point &rhs) {
+    bool operator==(const Point& lhs, const Point& rhs) {
         return (lhs.x == rhs.x) && (lhs.y == rhs.y);
     }
-    bool operator<(const Point &lhs, const Point &rhs) {
+    bool operator<(const Point& lhs, const Point& rhs) {
         return (lhs.x < rhs.x) || ((lhs.x == rhs.x) && (lhs.y < rhs.y));
     }
 

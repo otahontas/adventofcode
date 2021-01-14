@@ -31,7 +31,6 @@ void Test() {
     assert(Validate(111111) == true);
     assert(Validate(223450) == false);
     assert(Validate(123789) == false);
-
     assert(Validate(112233, true) == true);
     assert(Validate(123444, true) == false);
     assert(Validate(111122, true) == true);

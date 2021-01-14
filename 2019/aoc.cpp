@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <utility>
 #include <vector>
 
 // Helper methods not to be used outside this scope.
@@ -19,42 +20,72 @@ std::ifstream OpenFilestream(int day) {
 
 namespace aoc {
 
-    // Solution methods
+    // Solution public methods, documented in header.
+    Solution::Solution() {
+        part_one = 0;
+        part_two = 0;
+    }
+
+    Solution::Solution(long long first, long long second) {
+        part_one = first;
+        part_two = second;
+    }
     
     std::ostream& operator<<(std::ostream& os, const Solution& st) {
         os << "Part 1: " << st.part_one << "\n";
         os << "Part 2: " << st.part_two << "\n";
         return os;
-    };
+    }
 
-    // IntCode comp private methods
+    // IntCode comp private methods.
 
-    // Format instruction number to string with opcode + two param modes. Third
-    // param is always in immediate mode (if even used), so its mode isn't needed.
+    // Format instruction number to string with opcode + three param modes.
     std::string IntCodeComp::GetInstruction() {
-        std::string instruction = std::to_string(tape[head]);
+        std::string instruction = std::to_string(tape[pointer]);
         int size = instruction.size();
-        if (size > 4) {
+        if (size > 5) {
             throw std::runtime_error("Unsupported instruction: " + instruction);
         }
-        std::string prefix(4 - size, '0');
+        std::string prefix(5 - size, '0');
         return prefix + instruction;
     }
     
-    // Get opcode from last two chars of instruction
+    // Get opcode from last two chars of instruction.
     int IntCodeComp::GetOpcode(std::string &instruction) {
-        return stoi(instruction.substr(2, 4));
+        int opcode = stoi(instruction.substr(3, 5));
+        if (opcode == 99 || (opcode >= 1 && opcode <= 9)) {
+            return opcode;
+        }
+        throw std::runtime_error("Unsupported opcode " + std::to_string(opcode));
     }
 
-    // Get value for 1st or 2nd parameter based on param mode in instruction
-    int IntCodeComp::GetParam(std::string &instruction, int param_number) {
-        int mode = instruction[abs(param_number - 2)] - '0';
+    // Get value or address for parameter based on param mode and opcode. Address for
+    // param -array holds whether to return address with given param number and opcode
+    // instead of value. -1 means address should be never returned.
+    long long IntCodeComp::GetParam(std::string &instruction, int param_number) {
+        int address_for_param[9] = {3, 3, 1, -1, -1, -1, 3, 3, -1};
+        int mode = instruction[abs(param_number - 3)] - '0';
         switch (mode) {
             case 0: {
-                return tape[tape[head + param_number]];
+                long long address = tape[pointer + param_number];
+                if (address_for_param[opcode - 1] == param_number) {
+                    return address;
+                }
+                return tape[address];
             }
             case 1: {
-                return tape[head + param_number];
+                if (address_for_param[opcode - 1] == param_number) {
+                    throw std::runtime_error("Writing with immediate mode is not "
+                                             "supported. Instruction: " + instruction);
+                }
+                return tape[pointer + param_number];
+            }
+            case 2: {
+                long long address = base + tape[pointer + param_number];
+                if (address_for_param[opcode - 1] == param_number) {
+                    return address;
+                }
+                return tape[address];
             }
             default: {
                 throw std::runtime_error("Unsupported param mode: " +
@@ -62,71 +93,80 @@ namespace aoc {
             }
         }
     }
-    // Get zero, one or two parameter values based on opcode value.
-    std::vector<int> IntCodeComp::GetParams(std::string &instruction) {
-        int amounts[9] = {0, 2, 2, 0, 1, 2, 2, 2, 2};
-        switch (amounts[opcode]) {
-            case 0: {
-                return std::vector<int>();
-            }
-            case 1: {
-                return std::vector<int> { GetParam(instruction, 1) };
-            }
-            case 2: {
-                return std::vector<int> {
-                    GetParam(instruction, 1),
-                    GetParam(instruction, 2),
-                };
-            }
-            default: {
-                throw std::runtime_error("Couldn't get params from opcode " +
-                                         std::to_string(opcode));
-            }
+    // Get one, two or three parameters based on opcode value. Parameters can be either
+    // usable values or addresses to write to. Amounts-array holds correct amount of
+    // params to get for each opcode.
+    std::vector<long long> IntCodeComp::GetParams(std::string &instruction) {
+        int amounts[9] = {3, 3, 1, 1, 2, 2, 3, 3, 1};
+        int amount = amounts[opcode - 1];
+        std::vector<long long> params;
+        for (int i = 1; i <= amount; i++) {
+            params.push_back(GetParam(instruction, i));
         }
+        return params;
     }
-    
+
+    // Increase pointer depending on opcode value.
     void IntCodeComp::IncreasePointer() {
-        int amounts[9] = {0, 4, 4, 2, 2, 0, 0, 4, 4};
-        if (opcode < 1 || opcode > 8) {
-            throw std::runtime_error("Can't raise pointer with opcode" +
-                                     std::to_string(opcode));
-        }
-        head += amounts[opcode];
+        long long amounts[9] = {4, 4, 2, 2, 0, 0, 4, 4, 2};
+        pointer += amounts[opcode - 1];
     }
 
-    // IntCode comp public methods
+    // Change state of computer with some input or report error if state change not
+    // possible.
+    void IntCodeComp::ChangeState(const std::string& input) {
+        if ((state == "idle" || state == "waiting") && input == "run") {
+            state = "running";
+            return;
+        }
+        if (state == "running" && input == "wait") {
+            state = "waiting";
+            return;
+        }
+        if (state == "running" && input == "halt") {
+            state = "halted";
+            return;
+        }
+        throw std::runtime_error("Illegal state change from state " + state +
+                                 " with input " + input);
+    }
 
-    IntCodeComp::IntCodeComp(std::vector<int> initial_tape) {
-        tape = initial_tape;
+    // IntCode comp public methods, documented in header.
+
+    IntCodeComp::IntCodeComp(const std::vector<long long>& initial_tape) {
+        for (int i = 0; i < (int) initial_tape.size(); i++) {
+            tape[i] = initial_tape.at(i);
+        }
     }
 
     void IntCodeComp::Run() {
-        state = "running";
+        ChangeState("run");
         while (true) {
             std::string instruction = GetInstruction();
             opcode = GetOpcode(instruction);
 
             if (opcode == 99) {
-                state = "halted";
+                ChangeState("halt");
                 return;
             }
-            std::vector<int> params = GetParams(instruction);
+            std::vector<long long> params = GetParams(instruction);
+
 
             switch (opcode) {
                 case 1: {
-                    tape[tape[head + 3]] = params[0] + params[1];
+                    tape[params[2]] = params[0] + params[1];
                     break;
                 }
                 case 2: {
-                    tape[tape[head + 3]] = params[0] * params[1];
+                    tape[params[2]] = params[0] * params[1];
                     break;
                 }
                 case 3: {
-                    if (inputs.size() == 0) {
-                        state = "waiting";
+                    if (inputs.empty()) {
+                        ChangeState("wait");
                         return;
                     }
-                    tape[tape[head + 1]] = inputs.front(); 
+                    tape[params[0]] = inputs.front();
                     inputs.pop();
                     break;
                 }
@@ -135,21 +175,23 @@ namespace aoc {
                     break;
                 }
                 case 5: {
-                    head = (params[0] != 0) ? params[1] : head + 3;
+                    pointer = (params[0] != 0) ? params[1] : pointer + 3;
                     break;
                 }
                 case 6: {
-                    head = (params[0] == 0) ? params[1] : head + 3;
+                    pointer = (params[0] == 0) ? params[1] : pointer + 3;
                     break;
                 }
                 case 7: {
-                    int value = (params[0] < params[1]) ? 1 : 0;
-                    tape[tape[head + 3]] = value;
+                    tape[params[2]] = (params[0] < params[1]) ? 1 : 0;
                     break;
                 }
                 case 8: {
-                    int value = (params[0] == params[1]) ? 1 : 0;
-                    tape[tape[head + 3]] = value;
+                    tape[params[2]] = (params[0] == params[1]) ? 1 : 0;
+                    break;
+                }
+                case 9: {
+                    base += params[0];
                     break;
                 }
                 default: {
@@ -161,23 +203,24 @@ namespace aoc {
         }
     }
 
-    int IntCodeComp::ValueAtAddress(int address) {
-        if (address >= (int) tape.size()) {
-            throw std::runtime_error("Address out of index for tape size " + 
-                                     std::to_string(tape.size()));
+    long long IntCodeComp::ValueAtAddress(long long address) {
+        long long value = tape[address];
+        if (value == 0) {
+            throw std::runtime_error("Address " + std::to_string(address) + " has not" +
+                                     "been initialized yet, would return 0.");
         }
-        return tape[address];
+        return value;
     }
 
-    void IntCodeComp::AddInput(int input) {
+    void IntCodeComp::AddInput(long long input) {
         inputs.push(input);
     }
 
-    int IntCodeComp::GetOutput() {
-        if (outputs.size() == 0) {
+    long long IntCodeComp::GetOutput() {
+        if (outputs.empty()) {
             throw std::runtime_error("Can't get output from an empty queue!");
         }
-        int output = outputs.front();
+        long long output = outputs.front();
         outputs.pop();
         return output;
     }
@@ -186,21 +229,36 @@ namespace aoc {
         return state == "halted";
     }
 
-    // Input functions
+    // Input functions, public, documented in header.
     
     std::vector<int> ReadInputToInts(int day) {
         std::regex extractor("-\\d+|\\d+");
         std::string line;
-        std::vector<int> ints;
+        std::vector<int> nums;
         std::ifstream puzzle_input= OpenFilestream(day);
         while (getline(puzzle_input, line)) {
             auto start = std::sregex_iterator(line.begin(), line.end(), extractor);
             auto end = std::sregex_iterator();
             for (auto iter = start; iter != end; iter++) {
-                ints.push_back(stoi(iter->str()));
+                nums.push_back(stoi(iter->str()));
             }
         }
-        return ints;
+        return nums;
+    }
+
+    std::vector<long long> ReadInputToLongs(int day) {
+        std::regex extractor("-\\d+|\\d+");
+        std::string line;
+        std::vector<long long> nums;
+        std::ifstream puzzle_input= OpenFilestream(day);
+        while (getline(puzzle_input, line)) {
+            auto start = std::sregex_iterator(line.begin(), line.end(), extractor);
+            auto end = std::sregex_iterator();
+            for (auto iter = start; iter != end; iter++) {
+                nums.push_back(stoll(iter->str()));
+            }
+        }
+        return nums;
     }
 
     std::vector<std::string> ReadInputToLines(int day) {
@@ -220,30 +278,30 @@ namespace aoc {
         return line;
     }
 
-    std::vector<int> ReadDigitInputToInts(int day) {
+    std::vector<int> ReadInputToDigits(int day) {
         std::regex extractor("\\d");
         std::string line;
-        std::vector<int> ints;
+        std::vector<int> nums;
         std::ifstream puzzle_input= OpenFilestream(day);
         while (getline(puzzle_input, line)) {
             auto start = std::sregex_iterator(line.begin(), line.end(), extractor);
             auto end = std::sregex_iterator();
             for (auto iter = start; iter != end; iter++) {
-                ints.push_back(stoi(iter->str()));
+                nums.push_back(stoi(iter->str()));
             }
         }
-        return ints;
+        return nums;
     }
 
-    // Parser functions
+    // Parser functions, public, documented in header.
     std::vector<int> PositiveIntsFromString(std::string s) {
         std::regex extractor("\\d+");
-        std::vector<int> ints;
+        std::vector<int> nums;
         auto start = std::sregex_iterator(s.begin(), s.end(), extractor);
         auto end = std::sregex_iterator();
         for (auto iter = start; iter != end; iter++) {
-            ints.push_back(stoi(iter->str()));
+            nums.push_back(stoi(iter->str()));
         }
-        return ints;
+        return nums;
     }
 }

@@ -1,62 +1,70 @@
 #pragma once
 #include <iostream>
+#include <map>
 #include <queue>
 #include <vector>
 
 namespace aoc {
     // Holds both solutions and supports displaying them to stdout.
     struct Solution {
-        public:
-            int part_one = 0;
-            int part_two = 0;
+        long long part_one = 0;
+        long long part_two = 0;
+        Solution();
+        // Give both answers already in constructor.
+        Solution(long long first, long long second);
 
-            friend std::ostream& operator<<(std::ostream& os, const Solution& st);
+        // Support for printing solution
+        friend std::ostream& operator<<(std::ostream& os, const Solution& st);
     };
 
-
+    // Comp simulator to run Int Code programs in different puzzles.
     class IntCodeComp {
 
         private:
-            int head = 0;
+            // Private instance variables
             int opcode = 0;
+            long long pointer = 0;
+            long long base = 0;
             std::string state = "idle";
-            std::vector<int> tape;
-            std::queue<int> inputs;
-            std::queue<int> outputs;
+            std::map<long long, long long> tape;
+            std::queue<long long> inputs;
+            std::queue<long long> outputs;
 
-            // Private methods to help executing instructions
+            // Private methods to help executing instructions, documented in cpp file.
             std::string GetInstruction();
-            int GetOpcode(std::string &instruction);
-            int GetParam(std::string &instruction, int param_number);
-            std::vector<int> GetParams(std::string &instruction);
+            static int GetOpcode(std::string &instruction);
+            long long GetParam(std::string &instruction, int param_number);
+            std::vector<long long> GetParams(std::string &instruction);
             void IncreasePointer();
+            void ChangeState(const std::string& input);
 
         public:
-            // Initialize Int Code computer with tape.
-            IntCodeComp(std::vector<int> initial_tape);
+            // Initialize computer with tape.
+            explicit IntCodeComp(const std::vector<long long>& initial_tape);
 
             // Run program until it halts.
             void Run();
 
-            // Get value from memory address.
-            int ValueAtAddress(int address);
+            // Get value from memory address, or error if address is not initialized.
+            long long ValueAtAddress(long long address);
 
-            // Add input 
-            void AddInput(int input);
+            // Add input
+            void AddInput(long long input);
 
-            // Get output
-            int GetOutput();
+            // Get output from output queue.
+            long long GetOutput();
 
-            // Get computer status
+            // Get halt status.
             bool IsHalted();
 
     };
 
     // Functions to read inputs for given day
     std::vector<int> ReadInputToInts(int day);
+    std::vector<long long> ReadInputToLongs(int day);
     std::vector<std::string> ReadInputToLines(int day);
     std::string ReadInputToLine(int day);
-    std::vector<int> ReadDigitInputToInts(int day);
+    std::vector<int> ReadInputToDigits(int day);
 
     // Helper functions to reformat inputs 
     std::vector<int> PositiveIntsFromString(std::string s);

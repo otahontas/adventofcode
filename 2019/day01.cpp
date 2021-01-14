@@ -24,7 +24,6 @@ void Test() {
     assert(FuelRequirement(14)==2);
     assert(FuelRequirement(1969)==654);
     assert(FuelRequirement(100756)==33583);
-
     assert(RecursiveFuelRequirement(14)==2);
     assert(RecursiveFuelRequirement(1969)==966);
     assert(RecursiveFuelRequirement(100756)==50346);
