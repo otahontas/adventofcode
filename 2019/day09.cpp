@@ -3,6 +3,15 @@
 #include <vector>
 #include "aoc.h"
 
+
+// Get signal (computer output) based on input
+long long GetSignal(std::vector<long long>& puzzle_input, int initial_input) {
+    aoc::IntCodeComp comp(puzzle_input);
+    comp.AddInput(initial_input);
+    comp.Run();
+    return comp.GetOutput();
+}
+
 void Test() {
     std::vector<long long >example = { 109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,
                                        101,0,99 };
@@ -19,13 +28,6 @@ void Test() {
     assert(std::to_string(digit_comp.GetOutput()).length() == 16);
     big_num_comp.Run();
     assert(big_num_comp.GetOutput() == big_num_example[1]);
-}
-
-long long GetSignal(std::vector<long long>& puzzle_input, int initial_input) {
-    aoc::IntCodeComp comp(puzzle_input);
-    comp.AddInput(initial_input);
-    comp.Run();
-    return comp.GetOutput();
 }
 
 void Solve() {

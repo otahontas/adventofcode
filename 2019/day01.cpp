@@ -1,6 +1,5 @@
 #include <cassert>
 #include <iostream>
-#include <vector>
 #include "aoc.h"
 
 // Calculate fuel requirement for mass.
@@ -30,7 +29,7 @@ void Test() {
 }
 
 void Solve() {
-    std::vector<int> numbers = aoc::ReadInputToInts(1);
+    auto numbers = aoc::ReadInputToInts(1);
     aoc::Solution solution;
     for (auto num: numbers) {
         solution.part_one += FuelRequirement(num);

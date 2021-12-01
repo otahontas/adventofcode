@@ -15,5 +15,6 @@ add_executable(2019
         day07.cpp
         day08.cpp
         day09.cpp
+        day10.cpp
         dsalgos.cpp
         dsalgos.h)

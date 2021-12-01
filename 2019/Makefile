@@ -1,6 +1,6 @@
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -Wshadow
 
-all: day01 day02 day03 day04 day05 day06 day07 day08 day09
+all: day01 day02 day03 day04 day05 day06 day07 day08 day09 day10
 
 aoc.o: aoc.cpp aoc.h
 	$(CXX) $(CXXFLAGS) -c aoc.cpp
@@ -34,3 +34,6 @@ day08: day08.cpp aoc.o
 
 day09: day09.cpp aoc.o
 	$(CXX) $(CXXFLAGS) day09.cpp aoc.o -o build/$@
+
+day10: day10.cpp aoc.o dsalgos.o
+	$(CXX) $(CXXFLAGS) day10.cpp aoc.o dsalgos.o -o build/$@
