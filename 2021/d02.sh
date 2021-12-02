@@ -28,3 +28,20 @@ awk '{
 END {
   print res
 }' inputs/d02.txt
+
+echo "Part 2 v2:"
+aim=0
+x=0
+z=0
+function forward() {
+  z=$((z + $aim * $1))
+  x=$((x + $1))
+}
+function up() {
+  aim=$(( $aim - $1 ))
+}
+function down() {
+  aim=$(( $aim + $1 ))
+}
+eval "$(<inputs/d02.txt)"
+echo "$(( z * x ))"
