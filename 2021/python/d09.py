@@ -1,23 +1,16 @@
-from collections import defaultdict
-
-map = {}
-inp = [row for row in open("inputs/d09.txt").read().strip().split("\n")]
-
-for y in range(len(inp)):
-    for x in range(len(inp[y])):
-        map[(x, y)] = int(inp[y][x])
-
-
-def s(p, o):
-    return (p[0] + o[0], p[1] + o[1])
-
-
+rows = open("inputs/d09.txt").read().strip().split("\n")
+map = {
+    complex(x, y): int(rows[y][x])
+    for y, row in enumerate(rows)
+    for x in range(len(row))
+}
+dirs = [(0 + 1j), (1 + 0j), (0 - 1j), (-1 + 0j)]
 sum = 0
-dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
 for point in map:
     lowpoint = True
     for d in dirs:
-        neighbor = s(point, d)
+        neighbor = point + d
         if neighbor not in map:
             continue
         if map[neighbor] <= map[point]:
@@ -37,7 +30,7 @@ for point in map:
         while points:
             p = points.pop()
             for d in dirs:
-                neighbor = s(p, d)
+                neighbor = p + d
                 if neighbor in visited or neighbor not in map or map[neighbor] == 9:
                     continue
                 basin += 1

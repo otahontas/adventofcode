@@ -1,47 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
+source "./common.sh"
 
-echo "Part 1:"
-awk '{
-if ($1 == "forward") {
-  x += $2
-} else if ($1 == "up") {
-  z -= $2
-} else if ($1 == "down") {
-  z += $2
-}
-} { res = z * x}
-END {
-  print res
-}' inputs/d02.txt
+AIM=0; X=0; Z=0
 
-echo "Part 2:"
-awk '{
-  if ($1 == "forward") {
-    z += aim * $2
-    x += $2
-  } else if ($1 == "up") {
-    aim -= $2
-  } else if ($1 == "down") {
-    aim += $2
-  }
-} { res = z * x }
-END {
-  print res
-}' inputs/d02.txt
+forward() {
+  Z=$((Z + AIM * $1))
+  X=$((X + $1))
+}
 
-echo "Part 2 v2:"
-aim=0
-x=0
-z=0
-function forward() {
-  z=$((z + $aim * $1))
-  x=$((x + $1))
+up() {
+  AIM=$(( AIM - $1 ))
 }
-function up() {
-  aim=$(( $aim - $1 ))
+
+down() {
+  AIM=$(( AIM + $1 ))
 }
-function down() {
-  aim=$(( $aim + $1 ))
-}
-eval "$(<inputs/d02.txt)"
-echo "$(( z * x ))"
+
+input=$(readinput "02")
+
+eval "$input"
+
+first=$(( AIM * X ))
+second=$(( Z * X ))
+msg "Part 1: $first"
+msg "Part 2: $second"
