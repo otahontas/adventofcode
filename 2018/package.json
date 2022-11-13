@@ -1,0 +1,11 @@
+{
+  "name": "aoc-2018",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@tsconfig/node18-strictest": "^1.0.0",
+    "@types/node": "^18.11.9",
+    "rome": "^10.0.1",
+    "ts-arithmetic": "^0.1.1",
+    "typescript": "^4.8.4"
+  }
+}
