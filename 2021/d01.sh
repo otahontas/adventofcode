@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source "./common.sh"
 
-input=$(readinput "01")
+input=$(read_input "01")
 
 first=$(echo "$input" | awk 'NR > 1 && $0 > prev {count++} {prev=$0} END {print count}')
 

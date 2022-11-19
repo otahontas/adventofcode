@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # This file includes bunch of useful functions for aoc tasks
 
-
 #######################################
 # Set up sensible defaults for failing
 #######################################
@@ -62,8 +61,8 @@ die() {
 # RETURN:
 #   0 if print succeeds, non-zero on error.
 #######################################
-readinput() {
-    local day="$1"
-    local file="$SCRIPT_DIR/inputs/d$day.txt"
-    if [ -f "$file" ];then cat "$file";else die "File $file does not exist"; fi
+read_input() {
+  local day="$1"
+  local file="$SCRIPT_DIR/inputs/d$day.txt"
+  if [ -f "$file" ]; then cat "$file"; else die "File $file does not exist"; fi
 }
