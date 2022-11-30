@@ -3,6 +3,9 @@ source "./common.sh"
 
 input=$(read_input "01")
 
+# AWK 101:
+# - NR = line number ("ordinal record number")
+# - $0 = current line
 first=$(echo "$input" | awk 'NR > 1 && $0 > prev {count++} {prev=$0} END {print count}')
 
 second=$(echo "$input" | awk 'NR > 3 && sum > prev_sum {count++} {

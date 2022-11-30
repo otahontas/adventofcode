@@ -14,6 +14,7 @@ scrubber=$input
 get_rating() {
   mode=$1 # oxygen or scrubber
   lines=$2
+  index=$3
   # Return if solution already found
   amount_of_lines=$(echo "$lines" | wc -l)
   if [[ amount_of_lines -eq 1 ]]; then
@@ -21,8 +22,9 @@ get_rating() {
     return
   fi
 
-  lines_with_zeros=$(echo "$lines" | grep -E "^[0-1]{$i}0")
-  lines_with_ones=$(echo "$lines" | grep -E "^[0-1]{$i}1")
+  # Grep by matching which rows have matching number in col
+  lines_with_zeros=$(echo "$lines" | grep -E "^[0-1]{$index}0")
+  lines_with_ones=$(echo "$lines" | grep -E "^[0-1]{$index}1")
   zeros=$(echo "$lines_with_zeros" | wc -l)
   ones=$(echo "$lines_with_ones" | wc -l)
 
@@ -54,8 +56,8 @@ for ((i = 0; i < line_len; i++)); do
   gamma=$([[ "$zeros" -gt "$ones" ]] && echo "${gamma}0" || echo "${gamma}1")
 
   ### Part 2 stuff
-  oxygen=$(get_rating "oxygen" "$oxygen")
-  scrubber=$(get_rating "scrubber" "$scrubber")
+  oxygen=$(get_rating "oxygen" "$oxygen" "$i")
+  scrubber=$(get_rating "scrubber" "$scrubber" "$i")
 done
 
 ### Part 1 stuff
