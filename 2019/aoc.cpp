@@ -12,7 +12,7 @@
 std::ifstream OpenFilestream(int day) {
     std::string day_str =
         day >= 10 ? std::to_string(day) : "0" + std::to_string(day);
-    std::string filename = "inputs/d" + day_str + ".txt";
+    std::string filename = "inputs/" + day_str + ".txt";
     std::ifstream puzzle_input(filename);
     if (!puzzle_input.is_open()) {
         throw std::runtime_error("Unable to open file with filename: " +

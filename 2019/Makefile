@@ -1,6 +1,6 @@
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -Wshadow
 
-all: day01 day02 day03 day04 day05 day06 day07 day08 day09 day10
+all: 01 02 03 04 05 06 07 08 09 10
 
 aoc.o: aoc.cpp aoc.h
 	$(CXX) $(CXXFLAGS) -c aoc.cpp
@@ -8,32 +8,32 @@ aoc.o: aoc.cpp aoc.h
 dsalgos.o: dsalgos.cpp dsalgos.h
 	$(CXX) $(CXXFLAGS) -c dsalgos.cpp
 
-day01: day01.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day01.cpp aoc.o -o build/$@
+01: 01.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 01.cpp aoc.o -o build/$@
 
-day02: day02.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day02.cpp aoc.o -o build/$@
+02: 02.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 02.cpp aoc.o -o build/$@
 
-day03: day03.cpp aoc.o dsalgos.o
-	$(CXX) $(CXXFLAGS) day03.cpp aoc.o dsalgos.o -o build/$@
+03: 03.cpp aoc.o dsalgos.o
+	$(CXX) $(CXXFLAGS) 03.cpp aoc.o dsalgos.o -o build/$@
 
-day04: day04.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day04.cpp aoc.o -o build/$@
+04: 04.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 04.cpp aoc.o -o build/$@
 
-day05: day05.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day05.cpp aoc.o -o build/$@
+05: 05.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 05.cpp aoc.o -o build/$@
 
-day06: day06.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day06.cpp aoc.o -o build/$@
+06: 06.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 06.cpp aoc.o -o build/$@
 
-day07: day07.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day07.cpp aoc.o -o build/$@
+07: 07.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 07.cpp aoc.o -o build/$@
 
-day08: day08.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day08.cpp aoc.o -o build/$@
+08: 08.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 08.cpp aoc.o -o build/$@
 
-day09: day09.cpp aoc.o
-	$(CXX) $(CXXFLAGS) day09.cpp aoc.o -o build/$@
+09: 09.cpp aoc.o
+	$(CXX) $(CXXFLAGS) 09.cpp aoc.o -o build/$@
 
-day10: day10.cpp aoc.o dsalgos.o
-	$(CXX) $(CXXFLAGS) day10.cpp aoc.o dsalgos.o -o build/$@
+10: 10.cpp aoc.o dsalgos.o
+	$(CXX) $(CXXFLAGS) 10.cpp aoc.o dsalgos.o -o build/$@

@@ -63,6 +63,6 @@ die() {
 #######################################
 read_input() {
   local day="$1"
-  local file="$SCRIPT_DIR/inputs/d$day.txt"
+  local file="$SCRIPT_DIR/inputs/$day.txt"
   if [ -f "$file" ]; then cat "$file"; else die "File $file does not exist"; fi
 }

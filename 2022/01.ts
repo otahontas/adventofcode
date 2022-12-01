@@ -1,4 +1,5 @@
-import { readInput, sum } from "./helpers";
+import { sum } from "lodash"
+import { readInput } from "./helpers";
 
 const descendingSums = readInput("01", "\n\n")
 	.reduce<number[]>(
