@@ -4,6 +4,7 @@ specifiers:
   '@tsconfig/node18-strictest': ^1.0.0
   '@types/lodash': ^4.14.191
   '@types/node': ^18.11.10
+  fp-ts: ^2.13.1
   lodash: ^4.17.21
   rome: ^10.0.1
   ts-node: ^10.9.1
@@ -11,6 +12,7 @@ specifiers:
   typescript: ^4.9.3
 
 dependencies:
+  fp-ts: 2.13.1
   ts-pattern: 4.0.6
 
 devDependencies:
@@ -146,6 +148,10 @@ packages:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
     dev: true
+
+  /fp-ts/2.13.1:
+    resolution: {integrity: sha512-0eu5ULPS2c/jsa1lGFneEFFEdTbembJv8e4QKXeVJ3lm/5hyve06dlKZrpxmMwJt6rYen7sxmHHK2CLaXvWuWQ==}
+    dev: false
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
