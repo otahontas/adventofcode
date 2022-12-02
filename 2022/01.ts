@@ -1,4 +1,4 @@
-import { sum } from "lodash"
+import { sum } from "lodash";
 import { readInput } from "./helpers";
 
 const descendingSums = readInput("01", "\n\n")

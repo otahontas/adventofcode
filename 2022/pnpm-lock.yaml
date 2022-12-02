@@ -7,7 +7,11 @@ specifiers:
   lodash: ^4.17.21
   rome: ^10.0.1
   ts-node: ^10.9.1
+  ts-pattern: ^4.0.6
   typescript: ^4.9.3
+
+dependencies:
+  ts-pattern: 4.0.6
 
 devDependencies:
   '@tsconfig/node18-strictest': 1.0.0
@@ -195,6 +199,10 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-pattern/4.0.6:
+    resolution: {integrity: sha512-sFHQYD4KoysBi7e7a2mzDPvRBeqA4w+vEyRE+P5MU9VLq8eEYxgKCgD9RNEAT+itGRWUTYN+hry94GDPLb1/Yw==}
+    dev: false
 
   /typescript/4.9.3:
     resolution: {integrity: sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==}
