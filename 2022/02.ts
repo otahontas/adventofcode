@@ -1,4 +1,4 @@
-import { match } from "ts-pattern";
+import { match, P } from "ts-pattern";
 import { readInput } from "./helpers";
 
 const inputError = new Error("Wrong input");
@@ -24,17 +24,13 @@ const mod = (x: number, m: number) => ((x % m) + m) % m;
 
 const sanitize = (char: string): Choice =>
   match(char)
-    .with("A", () => 0 as const)
-    .with("B", () => 1 as const)
-    .with("C", () => 2 as const)
-    .with("X", () => 0 as const)
-    .with("Y", () => 1 as const)
-    .with("Z", () => 2 as const)
+    .with(P.union("A", "X"), () => 0 as const)
+    .with(P.union("B", "Y"), () => 1 as const)
+    .with(P.union("C", "Z"), () => 2 as const)
     .otherwise(() => {
       throw inputError;
     });
 
-// take double mod so remainder ends up being positive
 const get_my_score = (opp: number, me: number) =>
   match([opp, me] as const)
     .when(
@@ -42,9 +38,9 @@ const get_my_score = (opp: number, me: number) =>
       () => scores["draw"],
     )
     .otherwise(([opp, me]) =>
-      mod(mod(opp - me, CHOICE_AMOUNT), CHOICE_AMOUNT) < CHOICE_AMOUNT / 2
-        ? scores["lose"]
-        : scores["win"],
+      mod(me - opp, CHOICE_AMOUNT) < CHOICE_AMOUNT / 2
+        ? scores["win"]
+        : scores["lose"],
     );
 
 const getMePt2 = (opp: Choice, me: Choice) =>
