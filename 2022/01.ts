@@ -7,7 +7,7 @@ import * as Ord from "fp-ts/Ord";
 import * as RA from "fp-ts/lib/ReadonlyArray";
 import * as S from "fp-ts/lib/string";
 import { sum, range } from "lodash";
-import { printAnswers, readInput } from "./helpers";
+import { readInput, handleAnswer } from "./helpers";
 import type { ArrayType } from "./helpers";
 
 F.pipe(
@@ -31,8 +31,5 @@ F.pipe(
   ),
   E.flatten,
   E.map((threeBiggest) => [threeBiggest[0], sum(threeBiggest)] as const),
-  E.fold(
-    (error) => console.error("Error happened:", error),
-    (result) => printAnswers(result),
-  ),
+  handleAnswer,
 );

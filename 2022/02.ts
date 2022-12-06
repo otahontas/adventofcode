@@ -5,7 +5,7 @@ import * as RA from "fp-ts/lib/ReadonlyArray";
 import * as S from "fp-ts/lib/string";
 import { sum } from "lodash";
 import { match, P } from "ts-pattern";
-import { printAnswers, readInput } from "./helpers";
+import { readInput, handleAnswer } from "./helpers";
 
 type Shape = "Rock" | "Paper" | "Scissors";
 
@@ -56,8 +56,5 @@ F.pipe(
   E.map(
     F.flow(RA.unzip, ([first, second]) => [sum(first), sum(second)] as const),
   ),
-  E.fold(
-    (error) => console.error("Error happened:", error),
-    (result) => printAnswers(result),
-  ),
+  handleAnswer,
 );
