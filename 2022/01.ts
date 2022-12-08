@@ -1,35 +1,22 @@
-import * as A from "fp-ts/lib/Array";
 import * as E from "fp-ts/lib/Either";
-import * as F from "fp-ts/function";
-import * as N from "fp-ts/number";
-import * as Opt from "fp-ts/lib/Option";
-import * as Ord from "fp-ts/Ord";
-import * as RA from "fp-ts/lib/ReadonlyArray";
-import * as S from "fp-ts/lib/string";
-import { sum, range } from "lodash";
-import { readInput, handleAnswer } from "./helpers";
-import type { ArrayType } from "./helpers";
+import * as RNEA from "fp-ts/lib/ReadonlyNonEmptyArray";
+import { Ord } from "fp-ts/number";
+import { flow } from "fp-ts/function";
+import { fromRecord } from "fp-ts/lib/ReadonlyRecord";
+import { reverse } from "fp-ts/Ord";
+import { split } from "fp-ts/lib/string";
+import { sum } from "lodash";
+import { tuple, number } from "io-ts/Decoder";
+import { decodeWithSolverError } from "./errors";
+import { runSolver } from "./helpers";
 
-F.pipe(
-  readInput("01", "\n\n"),
-  E.map(
-    F.flow(
-      // Parse input
-      A.map(S.split("\n")),
-      RA.map(RA.map(Number)),
-      RA.map(sum),
-      RA.sort(Ord.reverse(N.Ord)),
-      (nums) => [...range(0, 3).map((index) => RA.lookup(index)(nums))],
-      Opt.sequenceArray,
-      Opt.fold(
-        () => E.left(new Error("There wasn't enough numbers in input array")),
-        <Arr extends readonly unknown[], Item = ArrayType<Arr>>(val: Arr) =>
-          // we can cast since we know successful case contains 3 elements
-          E.right(val as unknown as readonly [Item, Item, Item]),
-      ),
+runSolver(
+  flow(
+    RNEA.map(flow(split("\n"), RNEA.map(Number), sum)),
+    RNEA.sort(reverse(Ord)),
+    decodeWithSolverError(tuple(number, number, number)),
+    E.map((threeBiggest) =>
+      fromRecord({ first: threeBiggest[0], second: sum(threeBiggest) }),
     ),
   ),
-  E.flatten,
-  E.map((threeBiggest) => [threeBiggest[0], sum(threeBiggest)] as const),
-  handleAnswer,
-);
+)({ day: "01", splitBy: "\n\n" });

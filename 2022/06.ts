@@ -1,23 +1,38 @@
-import * as A from "fp-ts/lib/Array";
-import * as E from "fp-ts/lib/Either";
-import * as F from "fp-ts/function";
-import { readInput, handleAnswer } from "./helpers";
+import { flow } from "fp-ts/function";
+import { fromPredicate, map, Applicative } from "fp-ts/lib/Either";
+import { fromRecord, sequence } from "fp-ts/lib/ReadonlyRecord";
+import { head } from "fp-ts/lib/ReadonlyNonEmptyArray";
+import { of, append } from "fp-ts/lib/Array";
+import { sum } from "lodash";
+import { createSolverError } from "./errors";
+import { runSolver } from "./helpers";
 
-const findMarker = (datastream: string) => (length: number) =>
-  Array.from(datastream).findIndex(
-    (_val, index) =>
-      new Set(datastream.slice(index, index + length)).size === length,
-  ) + length;
-
-F.pipe(
-  readInput("06", "\n"),
-  E.map(
-    F.flow(
-      A.head,
-      E.fromOption(() => new Error("Input must be at least one line")),
-      E.map((datastream) => [4, 14].map(findMarker(datastream))),
+const findMarker = (length: number) =>
+  flow(
+    (datastream: string) =>
+      Array.from(datastream).findIndex(
+        (_val, index) =>
+          new Set(datastream.slice(index, index + length)).size === length,
+      ),
+    fromPredicate(
+      (n) => n === -1,
+      () =>
+        createSolverError({
+          errorName: "FindMarkerError",
+          errorMessage: "Couldn't find marker",
+        }),
     ),
+    map(flow(of, append(length), sum)),
+  );
+
+runSolver(
+  flow(
+    head,
+    (datastream) =>
+      fromRecord({
+        first: findMarker(4)(datastream),
+        second: findMarker(14)(datastream),
+      }),
+    sequence(Applicative),
   ),
-  E.flatten,
-  handleAnswer,
 );

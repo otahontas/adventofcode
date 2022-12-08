@@ -1,27 +1,35 @@
-import * as A from "fp-ts/lib/Array";
 import * as E from "fp-ts/lib/Either";
-import * as F from "fp-ts/function";
 import * as RA from "fp-ts/lib/ReadonlyArray";
-import * as S from "fp-ts/lib/string";
-import { sum } from "lodash";
+import * as RNEA from "fp-ts/lib/ReadonlyNonEmptyArray";
+import * as RT from "fp-ts/lib/ReadonlyTuple";
+import { flow } from "fp-ts/function";
+import { fromEntries } from "fp-ts/lib/ReadonlyRecord";
 import { match, P } from "ts-pattern";
-import { readInput, handleAnswer } from "./helpers";
+import { split } from "fp-ts/lib/string";
+import { sum } from "lodash";
+import { createSolverError } from "./errors";
+import { runSolver } from "./helpers";
+import type { SolverError } from "./errors";
 
 type Shape = "Rock" | "Paper" | "Scissors";
 
-const sanitize = (char: string): E.Either<Error, Shape> =>
+const sanitize = (char: string): E.Either<SolverError, Shape> =>
   match(char)
     .with(P.union("A", "X"), () => E.right("Rock" as const))
     .with(P.union("B", "Y"), () => E.right("Paper" as const))
     .with(P.union("C", "Z"), () => E.right("Scissors" as const))
     .otherwise((failedInput) =>
-      E.left(new Error(`Input ${failedInput} wasn't valid`)),
+      E.left(
+        createSolverError({
+          errorName: "SanitizeError",
+          errorMessage: `Input ${failedInput} wasn't valid`,
+        }),
+      ),
     );
 
-// Precalculated point map for both parts
 const toPoints = (
   setup: readonly Shape[],
-): E.Either<Error, readonly [number, number]> =>
+): E.Either<SolverError, readonly [number, number]> =>
   match(setup)
     .with(["Rock", "Rock"], () => E.right([4, 3] as const))
     .with(["Rock", "Paper"], () => E.right([8, 4] as const))
@@ -33,28 +41,25 @@ const toPoints = (
     .with(["Scissors", "Paper"], () => E.right([2, 6] as const))
     .with(["Scissors", "Scissors"], () => E.right([6, 7] as const))
     .otherwise((failedSetup) =>
-      E.left(new Error(`Match setup ${failedSetup} wasn't valid`)),
+      E.left(
+        createSolverError({
+          errorName: "MatchSetupError",
+          errorMessage: `Match setup ${failedSetup} wasn't valid`,
+        }),
+      ),
     );
 
-F.pipe(
-  readInput("02", "\n"),
-  E.map(
-    F.flow(
-      A.map(
-        F.flow(
-          S.split(" "),
-          RA.map(sanitize),
-          E.sequenceArray,
-          E.map(toPoints),
-          E.flatten,
-        ),
-      ),
-      E.sequenceArray,
+const toKSum = (k: "first" | "second") => (val: readonly number[]) =>
+  [k, sum(val)] as const;
+
+runSolver(
+  flow(
+    RNEA.map(
+      flow(split(" "), RNEA.map(sanitize), E.sequenceArray, E.chain(toPoints)),
+    ),
+    E.sequenceArray,
+    E.map(
+      flow(RA.unzip, RT.bimap(toKSum("second"), toKSum("first")), fromEntries),
     ),
   ),
-  E.flatten,
-  E.map(
-    F.flow(RA.unzip, ([first, second]) => [sum(first), sum(second)] as const),
-  ),
-  handleAnswer,
-);
+)({ day: "02", splitBy: "\n" });
