@@ -6,7 +6,7 @@ import { fromRecord } from "fp-ts/lib/ReadonlyRecord";
 import { reduce } from "fp-ts/lib/ReadonlyArray";
 import { tuple, number } from "io-ts/Decoder";
 import { createSolverError, decodeWithSolverError } from "./errors";
-import { runSolver } from "./helpers";
+import { runSolver } from "./shared";
 
 runSolver(
   flow(

@@ -5,7 +5,7 @@ import { head } from "fp-ts/lib/ReadonlyNonEmptyArray";
 import { of, append } from "fp-ts/lib/Array";
 import { sum } from "lodash";
 import { createSolverError } from "./errors";
-import { runSolver } from "./helpers";
+import { runSolver } from "./shared";
 
 const findMarker = (length: number) =>
   flow(

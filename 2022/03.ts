@@ -5,83 +5,50 @@ import * as RR from "fp-ts/lib/ReadonlyRecord";
 import * as RS from "fp-ts/lib/ReadonlySet";
 import * as RT from "fp-ts/lib/ReadonlyTuple";
 import * as S from "fp-ts/lib/string";
-import { flow } from "fp-ts/function";
-import { fromEntries } from "fp-ts/lib/ReadonlyRecord";
+import * as F from "fp-ts/function";
+import { Char, prismChar } from "newtype-ts/lib/Char";
 import { match } from "ts-pattern";
-import { sum } from "lodash";
-import { createSolverError } from "./errors";
-import { runSolver } from "./helpers";
-import type { SolverError } from "./errors";
+import { runSolver, createSolverError, toTuple } from "./shared";
 
+const toSet = F.flow((s: string) => new Set(s), RS.fromSet);
 const half = (s: string) => Math.floor(S.size(s) / 2);
-const toSet = (s: string) => RS.fromSet(new Set(s));
-
-const prio = (char: string): E.Either<SolverError, number> =>
-  match(char)
-    .when(
-      (c) => RegExp("[A-Z]").test(c),
-      (c) => E.right(c.charCodeAt(0) - 38),
-    )
-    .when(
-      (c) => RegExp("[a-z]").test(c),
-      (c) => E.right(c.charCodeAt(0) - 96),
-    )
-    .otherwise(() =>
-      E.left(
-        createSolverError({
-          errorName: "ConvertToPrioError",
-          errorMessage: "Input wasn't alphabetic",
-        }),
-      ),
-    );
-
-const sumOfPrios = flow(
-  RNEA.map(
-    flow(
-      RS.toReadonlyArray(S.Ord),
-      RA.head,
-      E.fromOption(() =>
-        createSolverError({
-          errorName: "InputError",
-          errorMessage: "There must be one char in intersection",
-        }),
-      ),
-      E.chain(prio),
-    ),
-  ),
-  E.sequenceArray,
-  E.map(sum),
+const prio = F.flow(
+  prismChar.reverseGet,
+  (s) => s.charCodeAt(0),
+  (x) => (x >= 97 ? x - 96 : x - 38),
 );
 
-const toKv = (k: string) => <V>(v: V) => [k, v] as const;
+// RR.sequence(E.Applicative),
+// const sumOfPrios = F.flow(
+//   RNEA.map(
+//     F.flow(
+//       RS.toReadonlyArray(S.Ord),
+//       RA.head,
+//       E.fromOption(() =>
+//         createSolverError({
+//           errorName: "InputError",
+//           errorMessage: "There must be one char in intersection",
+//         }),
+//       ),
+//       E.chain(prio),
+//     ),
+//   ),
+//   E.sequenceArray,
+//   E.map(sum),
+// );
 
 runSolver(
-  flow(
-    RNEA.map(flow(S.trim, (content) => [content, content] as const)),
+  F.flow(
+    RNEA.map(F.flow(S.trim, toTuple)),
     RNEA.unzip,
     RT.bimap(
-      flow(
+      F.flow(
         RNEA.map(toSet),
         RNEA.chunksOf(3),
         RNEA.map((groups) =>
           groups.reduce((acc, curr) => RS.intersection(S.Eq)(acc)(curr)),
         ),
-        sumOfPrios,
-        toKv("second"),
-      ),
-      flow(
-        RNEA.map(
-          flow(
-            (s) =>
-              [toSet(s.slice(0, half(s))), toSet(s.slice(half(s)))] as const,
-            ([left, right]) => RS.intersection(S.Eq)(left)(right),
-          ),
-        ),
-        sumOfPrios,
-        toKv("first"),
       ),
     ),
-    fromEntries,
-    RR.sequence(E.Applicative),
   ),
 )({ day: "03", splitBy: "\n" });

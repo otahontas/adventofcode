@@ -14,7 +14,7 @@ import { fromRecord } from "fp-ts/lib/ReadonlyRecord";
 import { sum, min } from "lodash";
 // import { match } from "ts-pattern";
 import { createSolverError } from "./errors";
-import { runSolver } from "./helpers";
+import { runSolver } from "./shared";
 
 type Node =
   | {
