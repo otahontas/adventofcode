@@ -9,8 +9,8 @@ import { match, P } from "ts-pattern";
 import { decode, runSolver, sum } from "./shared";
 
 const strategies = ["A", "B", "C", "X", "Y", "Z"] as const;
-type Strategy = typeof strategies[number];
 const shapes = ["Rock", "Paper", "Scissors"] as const;
+type Strategy = typeof strategies[number];
 type Shape = typeof shapes[number];
 
 const sanitize = (char: Strategy) =>
