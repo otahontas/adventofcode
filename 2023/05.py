@@ -8,29 +8,28 @@ from helpers import ints, lines
 
 def solve(i, ms):
     ok = P.empty()
-    for mapping in ms[1:]:
-        target, source, rang = ints(mapping)
-        change = target - source
-        s = P.closedopen(source, source + rang)
-        ok |= (i & s).apply(
-            lambda x: (x.left, x.lower + change, x.upper + change, x.right)
-        )
+    for t, s, r in (ints(m) for m in ms[1:]):
+        c = t - s
+        s = P.closedopen(s, s + r)
+        ok |= (i & s).apply(lambda x: (x.left, x.lower + c, x.upper + c, x.right))
         i -= s
     return i | ok
 
 
 pts = lines("05", "\n\n")
 ss = ints(pts[0])
-i1 = reduce(
-    lambda x, y: x | y,
-    [P.closedopen(a, a + 1) for a in ss],
+a1, a2 = reduce(
+    lambda x, ms: (solve(x[0], ms), solve(x[1], ms)),
+    (pt.splitlines() for pt in pts[1:]),
+    (
+        reduce(
+            lambda x, y: x | y,
+            (P.closedopen(a, a + 1) for a in ss),
+        ),
+        reduce(
+            lambda x, y: x | y,
+            (P.closedopen(a, a + b) for a, b in zip(ss[::2], ss[1::2])),
+        ),
+    ),
 )
-i2 = reduce(
-    lambda x, y: x | y,
-    [P.closedopen(a, a + b) for a, b in zip(ss[::2], ss[1::2])],
-)
-for part in pts[1:]:
-    ms = part.splitlines()
-    i1, i2 = (solve(i, ms) for i in (i1, i2))
-print(i1.lower)
-print(i2.lower)
+print(a1.lower, a2.lower)

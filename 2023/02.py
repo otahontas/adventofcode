@@ -8,9 +8,7 @@ lim = {
     "green": 13,
     "blue": 14,
 }
-
-a1 = 0
-a2 = 0
+a1, a2 = 0, 0
 for g, gs in (li.split(":") for li in lines("02")):
     _id = ints(g)[0]
     ok = True
@@ -22,6 +20,5 @@ for g, gs in (li.split(":") for li in lines("02")):
             ok = False
     a1 += _id if ok else 0
     a2 += prod(m)
-
 print(a1)
 print(a2)
