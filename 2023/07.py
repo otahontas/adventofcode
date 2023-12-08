@@ -52,5 +52,4 @@ def solve(lis, pt2=False):
     return sum(h.b * (i + 1) for i, h in enumerate(reversed(sorted(hs))))
 
 
-print(solve(lines("07")))
-print(solve(lines("07"), True))
+print(solve(lines("07")), solve(lines("07"), True))

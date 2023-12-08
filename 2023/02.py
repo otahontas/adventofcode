@@ -20,5 +20,4 @@ for g, gs in (li.split(":") for li in lines("02")):
             ok = False
     a1 += _id if ok else 0
     a2 += prod(m)
-print(a1)
-print(a2)
+print(a1, a2)
