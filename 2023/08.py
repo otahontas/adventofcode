@@ -10,7 +10,7 @@ m = {
     for a, l, r in ((x for x in re.findall(r"[A-Z]*", g) if x != "") for g in grid)
 }
 
-currs = [a for a in m.keys() if a[-1] == "A"]
+currs = [a for a in m if a[-1] == "A"]
 
 i = 0
 steps = 0
@@ -28,7 +28,7 @@ while True:
             found[c] = steps
         else:
             new_currs.append(c)
-    if len(new_currs) == 0:
+    if not new_currs:
         break
     currs = new_currs
 print(found["ZZZ"], reduce(math.lcm, found.values()))

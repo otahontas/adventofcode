@@ -7,4 +7,4 @@ def lines(day: str, delim: str = "\n") -> list[str]:
 
 
 def ints(s: str) -> list[int]:
-    return [int(x) for x in re.findall(r"\d+", s)]
+    return [int(x) for x in re.findall(r"-*\d+", s)]
