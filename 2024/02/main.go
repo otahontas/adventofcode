@@ -1,18 +1,13 @@
 package main
 
 import (
+	"adventofcode/utils"
+	_ "embed"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 )
 
-func abs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
+//go:embed 02.txt
+var input string
 
 func increasing(arr []int) bool {
 	if len(arr) <= 1 {
@@ -43,13 +38,18 @@ func diffs_ok(arr []int) bool {
 		return true
 	}
 	for i := 0; i < len(arr)-1; i++ {
-		abs_diff := abs(arr[i] - arr[i+1])
+		abs_diff := utils.Abs(arr[i] - arr[i+1])
 		if abs_diff < 1 || abs_diff > 3 {
 			return false
 		}
 	}
 	return true
 }
+
+func is_safe(arr []int) bool {
+	return (increasing(arr) || decreasing(arr)) && diffs_ok(arr)
+}
+
 func splice(arr []int, index int) []int {
 	new_arr := make([]int, 0)
 	for i := range arr {
@@ -70,30 +70,16 @@ func make_all_lists_with_one_element_removed(arr []int) [][]int {
 }
 
 func main() {
-	data, err := os.ReadFile("02.txt")
-	if err != nil {
-		fmt.Println("Can't read file")
-		panic(err)
-	}
 	ans1 := 0
 	ans2_addition := 0
-	for _, line := range strings.Split(strings.TrimSpace(string(data)), "\n") {
-		nums_as_str := strings.Fields(line)
-		nums := make([]int, 0)
-		for j := range nums_as_str {
-			num, err := strconv.Atoi(nums_as_str[j])
-			if err != nil {
-				fmt.Println("Error converting str to int")
-				panic(err)
-			}
-			nums = append(nums, num)
-		}
-		if (increasing(nums) || decreasing(nums)) && diffs_ok(nums) {
+	for _, line := range utils.ReadLines(input) {
+		levels := utils.ReadNumbers(line)
+		if is_safe(levels) {
 			ans1 += 1
 			continue
 		}
-		for _, list := range make_all_lists_with_one_element_removed(nums) {
-			if (increasing(list) || decreasing(list)) && diffs_ok(list) {
+		for _, new_levels := range make_all_lists_with_one_element_removed(levels) {
+			if is_safe(new_levels) {
 				ans2_addition += 1
 				break
 			}
@@ -101,5 +87,4 @@ func main() {
 	}
 	fmt.Println(ans1)
 	fmt.Println(ans1 + ans2_addition)
-
 }
