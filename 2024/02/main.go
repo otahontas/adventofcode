@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//go:embed 02.txt
+//go:embed input.txt
 var input string
 
 func increasing(arr []int) bool {
@@ -75,12 +75,12 @@ func main() {
 	for _, line := range utils.ReadLines(input) {
 		levels := utils.ReadNumbers(line)
 		if is_safe(levels) {
-			ans1 += 1
+			ans1++
 			continue
 		}
 		for _, new_levels := range make_all_lists_with_one_element_removed(levels) {
 			if is_safe(new_levels) {
-				ans2_addition += 1
+				ans2_addition++
 				break
 			}
 		}

@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-//go:embed 03.txt
+//go:embed input.txt
 var input string
 
 func main() {
