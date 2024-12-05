@@ -1,8 +1,17 @@
 # Advent of Code 2019 (C++)
 
-Notes:
+Setup with (to make `compile_commands.json` and `build` dir):
+```sh
+cmake -B build
+```
 
-- Code style follows [Google C++ Style Guide](
-https://google.github.io/styleguide/cppguide.html).
-- To build and run spesific day, execute `./run.sh [day]`
-- Explanations and tests in source files
+Then compile with:
+```sh
+make -C build
+````
+
+And then run solutions with:
+```sh
+`./build/[XX]
+```
+where `XX` is the two digit day number.
