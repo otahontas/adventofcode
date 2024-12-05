@@ -7,15 +7,23 @@ import (
 	"strings"
 )
 
-// Strips the whitespace and returns the input splitted by newlines
-func ReadLines(input string) []string {
-	return strings.Split(strings.TrimSpace(string(input)), "\n")
+// Delimiter is optional, see https://stackoverflow.com/a/23650312
+// Default delimiter is \n
+func SplitByDelimiterAndStrip(input string, delimiter ...string) []string {
+	resolved_delimiter := "\n"
+	if len(delimiter) > 1 {
+		panic("Too many variadic arguments for delimiter, call the function with args (string, delimiter")
+	}
+	if len(delimiter) == 1 && delimiter[0] != "" {
+		resolved_delimiter = delimiter[0]
+	}
+	return strings.Split(strings.TrimSpace(string(input)), resolved_delimiter)
 }
 
 var numbers_regex = regexp.MustCompile(`\d+`)
 
 // Reads the numbers from any input string
-func ReadNumbers(input string) []int {
+func ExtractNumbers(input string) []int {
 	nums_as_str := numbers_regex.FindAllString(input, -1)
 	nums := make([]int, 0)
 	for _, num_as_str := range nums_as_str {

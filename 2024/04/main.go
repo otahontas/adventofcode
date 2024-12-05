@@ -26,9 +26,8 @@ func step(y int, x int, dy int, dx int, grid []string, chars string, goal string
 }
 
 func main() {
-	grid := utils.ReadLines(input)
-	ans1 := 0
-	ans2 := 0
+	grid := utils.SplitByDelimiterAndStrip(input)
+	ans1, ans2 := 0, 0
 	for y, line := range grid {
 		for x, char := range line {
 			if char == 'X' {

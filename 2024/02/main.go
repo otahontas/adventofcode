@@ -70,10 +70,9 @@ func make_all_lists_with_one_element_removed(arr []int) [][]int {
 }
 
 func main() {
-	ans1 := 0
-	ans2_addition := 0
-	for _, line := range utils.ReadLines(input) {
-		levels := utils.ReadNumbers(line)
+	ans1, ans2_addition := 0, 0
+	for _, line := range utils.SplitByDelimiterAndStrip(input) {
+		levels := utils.ExtractNumbers(line)
 		if is_safe(levels) {
 			ans1++
 			continue
