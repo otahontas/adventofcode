@@ -44,6 +44,9 @@ public:
   // Get output from output queue.
   long long GetOutput();
 
+  // Get all outputs from output queue.
+  std::vector<long long> GetOutputs();
+
   // Get halt status.
   bool IsHalted();
 };

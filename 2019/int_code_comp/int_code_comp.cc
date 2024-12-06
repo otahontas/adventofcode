@@ -185,5 +185,14 @@ long long IntCodeComp::GetOutput() {
   return output;
 }
 
+std::vector<long long> IntCodeComp::GetOutputs() {
+  std::vector<long long> outputs_vector;
+  while (!outputs.empty()) {
+    outputs_vector.push_back(outputs.front());
+    outputs.pop();
+  }
+  return outputs_vector;
+}
+
 bool IntCodeComp::IsHalted() { return state == "halted"; }
 } // namespace int_code_comp
