@@ -33,7 +33,7 @@ func decreasing(arr []int) bool {
 	return true
 }
 
-func diffs_ok(arr []int) bool {
+func diffsOk(arr []int) bool {
 	if len(arr) <= 1 {
 		return true
 	}
@@ -46,8 +46,8 @@ func diffs_ok(arr []int) bool {
 	return true
 }
 
-func is_safe(arr []int) bool {
-	return (increasing(arr) || decreasing(arr)) && diffs_ok(arr)
+func isSafe(arr []int) bool {
+	return (increasing(arr) || decreasing(arr)) && diffsOk(arr)
 }
 
 func splice(arr []int, index int) []int {
@@ -61,7 +61,7 @@ func splice(arr []int, index int) []int {
 	return new_arr
 }
 
-func make_all_lists_with_one_element_removed(arr []int) [][]int {
+func makeAllListsWithOneElementRemoved(arr []int) [][]int {
 	lists := make([][]int, 0)
 	for i := range arr {
 		lists = append(lists, splice(arr, i))
@@ -73,12 +73,12 @@ func main() {
 	ans1, ans2_addition := 0, 0
 	for _, line := range utils.SplitByDelimiterAndStrip(input) {
 		levels := utils.ExtractNumbers(line)
-		if is_safe(levels) {
+		if isSafe(levels) {
 			ans1++
 			continue
 		}
-		for _, new_levels := range make_all_lists_with_one_element_removed(levels) {
-			if is_safe(new_levels) {
+		for _, new_levels := range makeAllListsWithOneElementRemoved(levels) {
+			if isSafe(new_levels) {
 				ans2_addition++
 				break
 			}

@@ -10,7 +10,7 @@ import (
 //go:embed input.txt
 var input string
 
-func is_in_right_order(pages []int, rules_map map[int]map[int]bool) bool {
+func isInRightOrder(pages []int, rules_map map[int]map[int]bool) bool {
 	for i := 0; i < len(pages)-1; i++ {
 		// apparently it's enough to check just the next number :D
 		if !rules_map[pages[i]][pages[i+1]] {
@@ -20,7 +20,7 @@ func is_in_right_order(pages []int, rules_map map[int]map[int]bool) bool {
 	return true
 }
 
-func put_to_right_order(pages []int, rules_map map[int]map[int]bool) []int {
+func putToRightOrder(pages []int, rules_map map[int]map[int]bool) []int {
 	pages_in_right_order := make([]int, len(pages))
 	copy(pages_in_right_order, pages)
 	sort.Slice(pages_in_right_order, func(i, j int) bool {
@@ -46,14 +46,14 @@ func main() {
 	updates_not_in_right_order := make([][]int, 0)
 	for _, update := range updates {
 		pages := utils.ExtractNumbers(update)
-		if is_in_right_order(pages, rules_map) {
+		if isInRightOrder(pages, rules_map) {
 			ans1 += pages[len(pages)/2]
 		} else {
 			updates_not_in_right_order = append(updates_not_in_right_order, pages)
 		}
 	}
 	for _, update := range updates_not_in_right_order {
-		update_in_right_order := put_to_right_order(update, rules_map)
+		update_in_right_order := putToRightOrder(update, rules_map)
 		ans2 += update_in_right_order[len(update_in_right_order)/2]
 	}
 	fmt.Println(ans1)
