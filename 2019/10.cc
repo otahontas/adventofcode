@@ -1,43 +1,41 @@
+#include "data_structures/complex.h"
 #include "utils/utils.h"
 #include <iostream>
 #include <numeric>
 #include <set>
 #include <vector>
 
-std::pair<int, int> GetDirectionVector(std::pair<int, int> source,
-                                       std::pair<int, int> destination) {
-  int dx = destination.first - source.first;
-  int dy = destination.second - source.second;
-  int gcd = std::gcd(dx, dy);
-  int step_x = dx / gcd;
-  int step_y = dy / gcd;
-  return {step_x, step_y};
+complex::Complex<int> GetDirectionVector(complex::Complex<int> source,
+                                         complex::Complex<int> destination) {
+  auto diff = destination - source;
+  int gcd = std::gcd(diff.real(), diff.imag());
+  return complex::Complex<int>(diff.real() / gcd, diff.imag() / gcd);
 }
 
-std::vector<std::pair<int, int>>
-FindAsteroidsInDirection(std::pair<int, int> source,
-                         std::pair<int, int> direction_vector, int h, int w,
-                         std::set<std::pair<int, int>> &asteroids) {
-  std::vector<std::pair<int, int>> asteroids_on_line;
-  int nx = source.first;
-  int ny = source.second;
-  while (nx < w && ny < h && nx >= 0 && ny >= 0) {
-    nx += direction_vector.first;
-    ny += direction_vector.second;
-    if (asteroids.find({nx, ny}) != asteroids.end()) {
-      asteroids_on_line.push_back({nx, ny});
+std::vector<complex::Complex<int>>
+FindAsteroidsInDirection(complex::Complex<int> source,
+                         complex::Complex<int> direction_vector, int h, int w,
+                         std::set<complex::Complex<int>> &asteroids) {
+  std::vector<complex::Complex<int>> asteroids_on_line;
+  auto current = source;
+  while (current.real() < w && current.imag() < h && current.real() >= 0 &&
+         current.imag() >= 0) {
+    current += direction_vector;
+    if (asteroids.find(current) != asteroids.end()) {
+      asteroids_on_line.push_back(current);
     }
   }
   return asteroids_on_line;
 }
 
-std::pair<std::pair<int, int>, int>
-FindBestLocation(int h, int w, std::set<std::pair<int, int>> &asteroids) {
-  std::pair<std::pair<int, int>, int> best_location_and_count = {{0, 0}, 0};
+std::pair<complex::Complex<int>, int>
+FindBestLocation(int h, int w, std::set<complex::Complex<int>> &asteroids) {
+  std::pair<complex::Complex<int>, int> best_location_and_count = {
+      complex::Complex<int>(0, 0), 0};
   for (auto &asteroid : asteroids) {
-    std::set<std::pair<int, int>> blocked_asteroids;
+    std::set<complex::Complex<int>> blocked_asteroids;
     for (auto &other : asteroids) {
-      if (asteroid.first == other.first && asteroid.second == other.second) {
+      if (asteroid == other) {
         continue;
       }
       if (blocked_asteroids.find(other) != blocked_asteroids.end()) {
@@ -60,14 +58,14 @@ FindBestLocation(int h, int w, std::set<std::pair<int, int>> &asteroids) {
   return best_location_and_count;
 }
 
-int Find200thAsteroidToVaporize(std::pair<int, int> source, int h, int w,
-                                std::set<std::pair<int, int>> &asteroids) {
-  std::set<std::pair<int, int>> angle_and_destination_added;
-  std::vector<std::tuple<double, double, std::pair<int, int>>>
+int Find200thAsteroidToVaporize(complex::Complex<int> source, int h, int w,
+                                std::set<complex::Complex<int>> &asteroids) {
+  std::set<complex::Complex<int>> angle_and_destination_added;
+  std::vector<std::tuple<double, double, complex::Complex<int>>>
       asteroids_with_angle_and_destination;
 
   for (auto &asteroid : asteroids) {
-    if (asteroid.first == source.first && asteroid.second == source.second) {
+    if (asteroid == source) {
       continue;
     }
     if (angle_and_destination_added.find(asteroid) !=
@@ -77,7 +75,7 @@ int Find200thAsteroidToVaporize(std::pair<int, int> source, int h, int w,
     auto direction_vector = GetDirectionVector(source, asteroid);
     // shift so that upwards (0, -y) is at 0 radians
     double radians =
-        M_PI_2 + atan2(direction_vector.second, direction_vector.first);
+        M_PI_2 + atan2(direction_vector.imag(), direction_vector.real());
     // normalize to [0, 2π)
     if (radians < 0) {
       radians += 2 * M_PI;
@@ -88,8 +86,8 @@ int Find200thAsteroidToVaporize(std::pair<int, int> source, int h, int w,
                                        asteroids_on_direction.end());
     for (auto &asteroid_on_direction : asteroids_on_direction) {
       double distance =
-          sqrt(pow(asteroid_on_direction.first - source.first, 2) +
-               pow(asteroid_on_direction.second - source.second, 2));
+          sqrt(pow(asteroid_on_direction.real() - source.real(), 2) +
+               pow(asteroid_on_direction.imag() - source.imag(), 2));
 
       asteroids_with_angle_and_destination.push_back(
           {radians, distance, asteroid_on_direction}); // so that we can sort
@@ -112,21 +110,21 @@ int Find200thAsteroidToVaporize(std::pair<int, int> source, int h, int w,
       prev_angle = angle;
       count++;
       if (count == 200) {
-        return asteroid.first * 100 + asteroid.second;
+        return asteroid.real() * 100 + asteroid.imag();
       }
     }
   }
 }
 
 int main() {
-  auto input = utils::ReadInputAndSplitByDelimiter("10");
-  std::set<std::pair<int, int>> asteroids;
-  int h = input.size();
-  int w = input[0].size();
+  auto grid = utils::ReadInputAndSplitByDelimiter("10");
+  std::set<complex::Complex<int>> asteroids;
+  int h = grid.size();
+  int w = grid[0].size();
   for (int y = 0; y < h; y++) {
     for (int x = 0; x < w; x++) {
-      if (input[y][x] == '#') {
-        asteroids.insert({x, y});
+      if (grid[y][x] == '#') {
+        asteroids.insert(complex::Complex<int>(x, y));
       }
     }
   }

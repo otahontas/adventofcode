@@ -17,6 +17,7 @@ execute_process(
 
 # Add libraries
 add_library(utils utils/utils.cc)
+add_library(complex data_structures/complex.cc)
 add_library(int_code_comp int_code_comp/int_code_comp.cc)
 
 # Add executables for each day
@@ -34,18 +35,20 @@ add_executable(11 11.cc)
 
 # Link libraries to executables
 target_link_libraries(01 PRIVATE utils)
-target_link_libraries(02 PRIVATE utils)
 target_link_libraries(02 PRIVATE int_code_comp)
+target_link_libraries(02 PRIVATE utils)
+target_link_libraries(03 PRIVATE complex)
 target_link_libraries(03 PRIVATE utils)
 target_link_libraries(04 PRIVATE utils)
-target_link_libraries(05 PRIVATE utils)
 target_link_libraries(05 PRIVATE int_code_comp)
+target_link_libraries(05 PRIVATE utils)
 target_link_libraries(06 PRIVATE utils)
-target_link_libraries(07 PRIVATE utils)
 target_link_libraries(07 PRIVATE int_code_comp)
+target_link_libraries(07 PRIVATE utils)
 target_link_libraries(08 PRIVATE utils)
-target_link_libraries(09 PRIVATE utils)
 target_link_libraries(09 PRIVATE int_code_comp)
+target_link_libraries(09 PRIVATE utils)
+target_link_libraries(10 PRIVATE complex)
 target_link_libraries(10 PRIVATE utils)
-target_link_libraries(11 PRIVATE utils)
 target_link_libraries(11 PRIVATE int_code_comp)
+target_link_libraries(11 PRIVATE utils)
