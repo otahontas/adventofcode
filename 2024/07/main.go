@@ -9,37 +9,30 @@ import (
 //go:embed input.txt
 var input string
 
-func TryOperation(a int, b int, operation string) int {
-	if operation == "+" {
-		return a + b
-	}
-	if operation == "*" {
-		return a * b
-	}
-	a_multiplier := 1
-	for tens := b; tens > 0; tens /= 10 {
-		a_multiplier *= 10
-	}
-	return a*a_multiplier + b
-}
-
-func Recurse(goal int, operation_map map[int]string, nums []int, current int, current_operations string, allow_concat bool) {
-	operations := []string{"+", "*"}
-	if allow_concat {
-		operations = append(operations, "||")
-	}
+func goalCanBeFormed(goal int, nums []int, current int) bool {
 	if current > goal {
-		return
+		return false
 	}
 	if len(nums) == 0 {
-		operation_map[current] = current_operations
-		return
+		return current == goal
 	}
-	for _, operation := range operations {
-		res := TryOperation(current, nums[0], operation)
-		others := nums[1:]
-		Recurse(goal, operation_map, others, res, current_operations+operation, allow_concat)
+	return goalCanBeFormed(goal, nums[1:], current+nums[0]) || goalCanBeFormed(goal, nums[1:], current*nums[0])
+}
+
+func goalCanBeFormedWithConcat(goal int, nums []int, current int) bool {
+	if current > goal {
+		return false
 	}
+	if len(nums) == 0 {
+		return current == goal
+	}
+	d := current
+	for tens := nums[0]; tens > 0; tens /= 10 {
+		d *= 10
+	}
+	return goalCanBeFormedWithConcat(goal, nums[1:], current+nums[0]) ||
+		goalCanBeFormedWithConcat(goal, nums[1:], current*nums[0]) ||
+		goalCanBeFormedWithConcat(goal, nums[1:], d+nums[0])
 }
 
 func main() {
@@ -48,14 +41,10 @@ func main() {
 	for _, line := range lines {
 		nums := utils.ExtractNumbers(line)
 		goal := nums[0]
-		operation_map := make(map[int]string)
-		Recurse(goal, operation_map, nums[2:], nums[1], "", false)
-		if operation_map[goal] != "" {
+		if goalCanBeFormed(goal, nums[2:], nums[1]) {
 			ans1 += goal
 		}
-		operation_map = make(map[int]string)
-		Recurse(goal, operation_map, nums[2:], nums[1], "", true)
-		if operation_map[goal] != "" {
+		if goalCanBeFormedWithConcat(goal, nums[2:], nums[1]) {
 			ans2 += goal
 		}
 	}
