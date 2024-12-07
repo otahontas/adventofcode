@@ -10,3 +10,5 @@ use language-specific coding conventions, idioms and project tools.
 | 2020 | Python           |
 | 2021 | Shell scripting  |
 | 2022 | Typescript       |
+| 2023 | ?                |
+| 2024 | Go               |
