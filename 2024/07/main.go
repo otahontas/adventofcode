@@ -4,7 +4,6 @@ import (
 	"adventofcode/utils"
 	_ "embed"
 	"fmt"
-	"strconv"
 )
 
 //go:embed input.txt
@@ -17,26 +16,29 @@ func TryOperation(a int, b int, operation string) int {
 	if operation == "*" {
 		return a * b
 	}
-	res, err := strconv.Atoi(strconv.Itoa(a) + strconv.Itoa(b))
-	if err != nil {
-		panic(err)
+	a_multiplier := 1
+	for tens := b; tens > 0; tens /= 10 {
+		a_multiplier *= 10
 	}
-	return res
+	return a*a_multiplier + b
 }
 
-func Recurse(operation_map map[int]string, nums []int, result int, result_operations string, allow_concat bool) {
+func Recurse(goal int, operation_map map[int]string, nums []int, current int, current_operations string, allow_concat bool) {
 	operations := []string{"+", "*"}
 	if allow_concat {
 		operations = append(operations, "||")
 	}
+	if current > goal {
+		return
+	}
 	if len(nums) == 0 {
-		operation_map[result] = result_operations
+		operation_map[current] = current_operations
 		return
 	}
 	for _, operation := range operations {
-		res := TryOperation(result, nums[0], operation)
+		res := TryOperation(current, nums[0], operation)
 		others := nums[1:]
-		Recurse(operation_map, others, res, result_operations+operation, allow_concat)
+		Recurse(goal, operation_map, others, res, current_operations+operation, allow_concat)
 	}
 }
 
@@ -45,16 +47,16 @@ func main() {
 	ans1, ans2 := 0, 0
 	for _, line := range lines {
 		nums := utils.ExtractNumbers(line)
-		result := nums[0]
+		goal := nums[0]
 		operation_map := make(map[int]string)
-		Recurse(operation_map, nums[2:], nums[1], "", false)
-		if operation_map[result] != "" {
-			ans1 += result
+		Recurse(goal, operation_map, nums[2:], nums[1], "", false)
+		if operation_map[goal] != "" {
+			ans1 += goal
 		}
 		operation_map = make(map[int]string)
-		Recurse(operation_map, nums[2:], nums[1], "", true)
-		if operation_map[result] != "" {
-			ans2 += result
+		Recurse(goal, operation_map, nums[2:], nums[1], "", true)
+		if operation_map[goal] != "" {
+			ans2 += goal
 		}
 	}
 	fmt.Println(ans1)
