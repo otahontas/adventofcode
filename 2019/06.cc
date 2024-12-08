@@ -20,8 +20,8 @@ ParseToAdjacencyList(std::vector<std::string> &input) {
   return graph;
 }
 
-int DepthFirstSearch(std::map<std::string, std::vector<std::string>> &graph,
-                     const std::string &start, const std::string &goal = "") {
+int DFS(std::map<std::string, std::vector<std::string>> &graph,
+        const std::string &start, const std::string &goal = "") {
   std::stack<std::pair<std::string, int>> s;
   std::set<std::string> seen;
   int count = 0;
@@ -52,8 +52,8 @@ int DepthFirstSearch(std::map<std::string, std::vector<std::string>> &graph,
 int main() {
   auto input = utils::ReadInputAndSplitByDelimiter("06");
   auto graph = ParseToAdjacencyList(input);
-  int ans1 = DepthFirstSearch(graph, "COM");
-  int ans2 = DepthFirstSearch(graph, "YOU", "SAN");
+  int ans1 = DFS(graph, "COM");
+  int ans2 = DFS(graph, "YOU", "SAN");
   std::cout << ans1 << std::endl;
   std::cout << ans2 << std::endl;
 }

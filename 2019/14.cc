@@ -89,7 +89,9 @@ long long CalculateOreAmount(std::map<std::string, Chemical> &chemicals) {
 // binary search
 long long FindMaxFuel(const std::vector<std::string> &lines, int start_value) {
   long long ores = 1000000000000;
+  // lower bound, this is what we can at least produce
   long long lower = ores / start_value;
+  // upper bound set to something that is definitely too much
   long long higher = 2 * lower;
 
   while (higher > lower + 1) {

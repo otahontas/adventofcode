@@ -36,6 +36,7 @@ add_executable(12 12.cc)
 add_executable(13 13.cc)
 add_executable(14 14.cc)
 add_executable(15 15.cc)
+add_executable(16 16.cc)
 
 # Link libraries to executables
 target_link_libraries(01 PRIVATE utils)
@@ -64,3 +65,4 @@ target_link_libraries(14 PRIVATE utils)
 target_link_libraries(15 PRIVATE complex)
 target_link_libraries(15 PRIVATE int_code_comp)
 target_link_libraries(15 PRIVATE utils)
+target_link_libraries(16 PRIVATE utils)

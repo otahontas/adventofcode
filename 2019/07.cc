@@ -5,7 +5,6 @@
 
 long long GetLargestOutputWithoutFeedback(std::vector<long long> &tape) {
   int base[] = {0, 1, 2, 3, 4};
-  std::sort(base, base + 5);
   long long max_signal = 0;
 
   do {
@@ -24,7 +23,6 @@ long long GetLargestOutputWithoutFeedback(std::vector<long long> &tape) {
 
 long long GetLargestOutputWithFeedback(std::vector<long long> &tape) {
   int base[] = {5, 6, 7, 8, 9};
-  std::sort(base, base + 5);
   long long max_signal = 0;
 
   do {

@@ -85,6 +85,10 @@ long long SimulateUntilSameState(
     SimulateGravity(moons);
     SimulateVelocity(moons);
     steps++;
+
+    // optimization: if we have found the repeat for all axes,
+    // we can just return the LCM of the steps. There the whole system
+    // is back in its original state
     bool all_repeated = true;
     for (int axis = 0; axis < 3; axis++) {
       if (steps_until_repeat[axis] != 0) {

@@ -89,8 +89,9 @@ int Find200thAsteroidToVaporize(complex::Complex<int> source, int h, int w,
           sqrt(pow(asteroid_on_direction.real() - source.real(), 2) +
                pow(asteroid_on_direction.imag() - source.imag(), 2));
 
+      // push tuple so we can sort by radians and then by distance
       asteroids_with_angle_and_destination.push_back(
-          {radians, distance, asteroid_on_direction}); // so that we can sort
+          {radians, distance, asteroid_on_direction});
       angle_and_destination_added.insert(asteroid_on_direction);
     }
   }
@@ -103,6 +104,7 @@ int Find200thAsteroidToVaporize(complex::Complex<int> source, int h, int w,
   while (true) {
     for (int i = 0; i < asteroids_with_angle_and_destination.size(); i++) {
       auto [angle, _, asteroid] = asteroids_with_angle_and_destination[i];
+      // vaporize always the closest asteroid
       if (angle == prev_angle || vaporized[i]) {
         continue;
       }

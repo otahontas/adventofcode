@@ -17,6 +17,8 @@ GetCoordinates(std::vector<long long> &tape) {
   std::set<complex::Complex<int>> open_locations;
   complex::Complex<int> oxygen_system_location(0, 0);
   int steps_to_find_oxygen_system = 0;
+
+  // run bfs, copy the comps since they're stateful
   std::queue<std::tuple<complex::Complex<int>, int_code_comp::IntCodeComp, int>>
       q;
   q.push({complex::Complex<int>(0, 0), int_code_comp::IntCodeComp(tape), 0});
@@ -49,6 +51,7 @@ GetCoordinates(std::vector<long long> &tape) {
 
 int GetMinutesToFillWithOxygen(std::set<complex::Complex<int>> &open_locations,
                                complex::Complex<int> oxygen_system_location) {
+  // just a basic game of life simulation
   int minutes = 0;
   std::set<complex::Complex<int>> filled = {oxygen_system_location};
   while (filled.size() < open_locations.size()) {
